@@ -1,0 +1,1497 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nucleophiles and Redox</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: lab-notebook study app. Sticky topic rail on the left (chip bar on phones), one lesson at a time, quiz docked under each lesson. */
+:root{
+  --bg:#eef2f1; --surface:#ffffff; --surface-2:#f6f8f7; --ink:#15211e; --muted:#566662; --line:#d3dcd9;
+  --accent:#6a2c9e;        /* permanganate purple */
+  --accent-soft:#efe6f7;
+  --amber:#a8580c;         /* bromine amber, for key results */
+  --amber-soft:#fbefe1;
+  --on-accent:#ffffff; --good:#1f7a4a; --good-soft:#e2f3ea; --bad:#b3261e; --bad-soft:#fbe7e5;
+  --f-display:"Space Grotesk",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111614; --surface:#182120; --surface-2:#1e2826; --ink:#e4ebe9; --muted:#9aaba6; --line:#2d3a37;
+  --accent:#c39ae8; --accent-soft:#2c2239; --on-accent:#1a1022; --amber:#e8a25a; --amber-soft:#33261a;
+  --good:#5cc98e; --good-soft:#173023; --bad:#f08a80; --bad-soft:#3a1d1b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111614; --surface:#182120; --surface-2:#1e2826; --ink:#e4ebe9; --muted:#9aaba6; --line:#2d3a37;
+  --accent:#c39ae8; --accent-soft:#2c2239; --on-accent:#1a1022; --amber:#e8a25a; --amber-soft:#33261a;
+  --good:#5cc98e; --good-soft:#173023; --bad:#f08a80; --bad-soft:#3a1d1b; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15.5px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+a{color:var(--accent)}
+sub,sup{font-size:.72em;line-height:0}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 60px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:28px}
+header.top{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:12px}
+header.top .eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header.top h1{font-size:clamp(26px,4vw,38px);font-weight:700;letter-spacing:-.01em}
+header.top .meta{font-size:13px;color:var(--muted)}
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;display:flex;flex-direction:column;gap:2px}
+nav.rail a{display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:6px;text-decoration:none;color:var(--ink);padding:8px 10px;border-radius:8px;font-size:14px;line-height:1.25}
+nav.rail a .code{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+nav.rail a .score{font-family:var(--f-mono);font-size:11px;color:var(--good)}
+nav.rail a:hover{background:var(--surface)}
+nav.rail a[aria-current="page"]{background:var(--accent);color:var(--on-accent)}
+nav.rail a[aria-current="page"] .code,nav.rail a[aria-current="page"] .score{color:var(--on-accent);opacity:.85}
+nav.rail .sep{height:1px;background:var(--line);margin:8px 4px}
+main{min-width:0}
+section.view{display:flex;flex-direction:column;gap:22px}
+.lesson-head{display:flex;flex-direction:column;gap:6px}
+.lesson-head .tag{font-family:var(--f-mono);font-size:12px;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.lesson-head h2{font-size:clamp(24px,3.2vw,32px)}
+.lesson-head p{color:var(--muted);max-width:68ch;margin:0}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.block h3{font-size:19px}
+.block h4{font-size:15.5px;margin-top:6px}
+.block p{margin:0;max-width:72ch}
+.block ul,.block ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:74ch}
+.mech{font-family:var(--f-mono);font-size:13.5px;line-height:1.75;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:pre;margin:0}
+.key{background:var(--amber-soft);border-left:4px solid var(--amber);border-radius:6px;padding:10px 14px;max-width:76ch}
+.key b:first-child{color:var(--amber)}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;font-size:14px;min-width:100%}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-display);font-weight:600;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono)}
+.chem{font-family:var(--f-mono);font-size:.93em;white-space:nowrap}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.two>div{min-width:0}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.goto{display:inline-flex;align-items:center;gap:6px;font-weight:600;text-decoration:none;border:1px solid var(--accent);color:var(--accent);border-radius:8px;padding:8px 12px;width:max-content;max-width:100%}
+.goto:hover{background:var(--accent-soft)}
+/* home */
+.grid-topics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.tcard{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.tcard:hover{border-color:var(--accent)}
+.tcard .row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.tcard .code{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.tcard h3{font-size:17px}
+.tcard p{margin:0;font-size:13.5px;color:var(--muted)}
+.tcard .score{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tcard .score.done{color:var(--good)}
+/* quiz */
+.quiz{border:2px solid var(--accent);border-radius:12px;background:var(--surface);padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.quiz .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.quiz .qhead h3{font-size:19px;color:var(--accent)}
+.quiz .progress{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.quiz .bar{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.quiz .bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.quiz .prompt{font-weight:600;font-size:16px;max-width:72ch}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{font:inherit;text-align:left;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 14px;cursor:pointer;display:grid;grid-template-columns:24px 1fr;gap:8px}
+.opt .l{font-family:var(--f-mono);color:var(--muted)}
+.opt:hover:not([disabled]){border-color:var(--accent)}
+.opt:focus-visible,.btn:focus-visible,nav.rail a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt[disabled]{cursor:default}
+.opt.right{background:var(--good-soft);border-color:var(--good)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.feedback{border-radius:8px;padding:10px 14px;background:var(--surface-2);max-width:76ch}
+.feedback b.ok{color:var(--good)} .feedback b.no{color:var(--bad)}
+.qnav{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-weight:600;font-size:14px;border-radius:8px;padding:9px 14px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn:disabled{opacity:.45;cursor:default}
+.result{font-family:var(--f-display);font-size:22px}
+.review{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.review div{padding:6px 10px;border-radius:6px;background:var(--surface-2)}
+/* calculator */
+.calc-controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+select,input{font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+input[type=number]{width:80px;font-family:var(--f-mono)}
+input.name{width:100%;min-width:0}
+.seg{display:inline-flex;border:1px solid var(--accent);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-weight:600;border:0;background:transparent;color:var(--accent);padding:8px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.rows td input,.rows td select{width:100%}
+.rows td.n{width:90px} .rows td.t{width:110px} .rows td.x{width:44px}
+.xbtn{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px;padding:4px 8px}
+.bars{display:flex;flex-direction:column;gap:8px}
+.barrow{display:grid;grid-template-columns:minmax(0,220px) 1fr 70px;gap:10px;align-items:center;font-size:14px}
+.barrow .lbl{overflow-wrap:anywhere}
+.barrow .track{height:18px;background:var(--surface-2);border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+.barrow .fill{height:100%;background:var(--amber)}
+.barrow .pct{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+.work{font-family:var(--f-mono);font-size:13.5px;line-height:1.85;background:var(--surface-2);border:1px dashed var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto;white-space:pre}
+.practice-row{display:grid;grid-template-columns:minmax(0,1fr) 110px 120px;gap:10px;align-items:center;font-size:14px}
+.practice-row .st{font-family:var(--f-mono);font-size:13px}
+.practice-row .st.ok{color:var(--good)} .practice-row .st.no{color:var(--bad)}
+.parthead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px}
+.vids{display:flex;flex-wrap:wrap;gap:6px}
+.lesson-head .vids{margin-top:4px}
+.vpill{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;text-decoration:none;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:4px 12px;white-space:nowrap}
+.vpill:hover{text-decoration:underline}
+.vpill.off{color:var(--muted);background:var(--surface-2);font-weight:500}
+.vlist td{vertical-align:middle}
+.vlist tr.done td:nth-child(3){color:var(--muted);text-decoration:line-through}
+.vlist input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}
+@media (max-width:820px){
+  .wrap{grid-template-columns:minmax(0,1fr)}
+  nav.rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;flex-direction:row;overflow-x:auto;background:var(--bg);padding-block:8px;gap:6px;margin-inline:-4px;scrollbar-width:thin}
+  nav.rail a{display:flex;flex:0 0 auto;border:1px solid var(--line);background:var(--surface);padding:6px 10px}
+  nav.rail a .full,nav.rail a .score{display:none}
+  nav.rail .sep{display:none}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+  .block,.quiz{padding:16px}
+  .barrow{grid-template-columns:minmax(0,1fr) 64px}
+  .barrow .track{grid-column:1/-1;grid-row:2}
+  .practice-row{grid-template-columns:minmax(0,1fr) 90px}
+  .practice-row .st{grid-column:1/-1}
+}
+
+.edge{background:var(--surface);border:2px dashed var(--accent);border-radius:12px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.edge>.lbl{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.edge h3{font-size:19px}
+.edge h4{font-size:15.5px;margin-top:4px}
+.edge p{margin:0;max-width:72ch}
+.edge ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;max-width:76ch}
+.ref{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+figure.dg{margin:0;display:flex;flex-direction:column;gap:6px;min-width:0}
+figure.dg .sv{overflow-x:auto}
+figure.dg svg{display:block;max-width:100%;height:auto}
+figure.dg figcaption{font-size:13px;color:var(--muted);max-width:72ch}
+.dg text{fill:var(--ink);font-family:var(--f-body);font-size:12px}
+.dg text.m{fill:var(--muted);font-size:11px}
+.dg text.a{fill:var(--amber);font-weight:600}
+.dg text.p{fill:var(--accent);font-weight:600}
+.dg text.mono{font-family:var(--f-mono)}
+.dg .ax{stroke:var(--muted);stroke-width:1.2;fill:none}
+.dg .ln{stroke:var(--ink);stroke-width:1.6;fill:none}
+.dg .la{stroke:var(--amber);stroke-width:2.6;fill:none}
+.dg .lp{stroke:var(--accent);stroke-width:2.6;fill:none}
+.dg .lm{stroke:var(--muted);stroke-width:2;fill:none;stroke-dasharray:5 4}
+.dg .ba{fill:var(--amber)} .dg .bp{fill:var(--accent)} .dg .bm{fill:var(--line)}
+.dg .lobe{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.4}
+.dg .dot{fill:var(--ink)}
+.tree{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.tree .n{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px 12px;font-size:14px;max-width:100%}
+.tree .q{border-color:var(--accent);font-weight:600}
+.tree .r{border-color:var(--amber);background:var(--amber-soft);font-weight:600}
+.tree .row{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;padding-left:18px;border-left:2px solid var(--line)}
+.tree .br{display:flex;flex-direction:column;gap:6px;min-width:0}
+.tree .yn{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+<header class="top">
+  <div>
+    <div class="eyebrow">CHEM 33 · Fourth Long Exam · Nucleophilic and Redox Reactions</div>
+    <h1>Nucleophiles &amp; Redox</h1>
+  </div>
+  <div class="meta">8 lessons · 8 quizzes · mechanism predictor</div>
+</header>
+
+<nav class="rail" id="rail" aria-label="Topics">
+  <a href="#home" data-v="home"><span class="code">Plan</span><span>Exam plan</span><span class="score"></span></a>
+  <div class="sep"></div>
+  <a href="#start" data-v="start"><span class="code">Start</span><span class="full">The four factors</span><span class="score" data-s="start"></span></a>
+  <a href="#sn" data-v="sn"><span class="code">S<sub>N</sub>1/2</span><span class="full">Substitution at sp³ C</span><span class="score" data-s="sn"></span></a>
+  <a href="#elim" data-v="elim"><span class="code">E1/E2</span><span class="full">Elimination</span><span class="score" data-s="elim"></span></a>
+  <a href="#other" data-v="other"><span class="code">ROH</span><span class="full">Other substrates</span><span class="score" data-s="other"></span></a>
+  <a href="#an" data-v="an"><span class="code">C=O</span><span class="full">Nucleophilic addition</span><span class="score" data-s="an"></span></a>
+  <a href="#snac" data-v="snac"><span class="code">RCOL</span><span class="full">Acyl substitution</span><span class="score" data-s="snac"></span></a>
+  <a href="#snar" data-v="snar"><span class="code">S<sub>N</sub>Ar</span><span class="full">Nucleophilic aromatic</span><span class="score" data-s="snar"></span></a>
+  <a href="#redox" data-v="redox"><span class="code">[O] [H]</span><span class="full">Redox reagents</span><span class="score" data-s="redox"></span></a>
+  <div class="sep"></div>
+  <a href="#predict" data-v="predict"><span class="code">?</span><span>S<sub>N</sub> or E predictor</span><span class="score"></span></a>
+</nav>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<section class="view" id="v-home">
+  <div class="lesson-head">
+    <span class="tag">Fourth Long Exam scope</span>
+    <h2>Something electron-rich attacks a carbon that's electron-poor, or something gets oxidized or reduced</h2>
+    <p>Only what's on your syllabus and video list is here. Go top to bottom; each lesson ends with a quiz, and the predictor tool lets you drill the SN1/SN2/E1/E2 decision as many times as you like.</p>
+  </div>
+  <div class="block">
+    <h3>What the exam asks you to do</h3>
+    <div class="two">
+      <div><h4>Reactions involving nucleophiles</h4>
+        <ol><li><b>Explain the factors</b> affecting nucleophilic reactions.</li><li><b>Illustrate the mechanisms.</b></li><li><b>Predict the products.</b></li></ol></div>
+      <div><h4>Reactions involving redox reagents</h4>
+        <ol><li><b>Discuss the common oxidizing and reducing agents.</b></li><li><b>Discuss their uses</b> in qualitative analysis, synthesis and structure elucidation.</li></ol></div>
+    </div>
+    <div class="key"><b>The shortcut:</b> before you draw anything, classify the reagent (nucleophile only, base only, both, or weak) and the substrate (1°, 2°, 3°, or a C=O). Those two answers decide almost every "predict the product" item.</div>
+  </div>
+  <div class="grid-topics" id="home-cards"></div>
+  <div class="block">
+    <h3>Video checklist</h3>
+    <p>Tick each one off as you watch it; your ticks stay in this browser. The redox topic has no video on your list, so use the lesson and Lab 10.</p>
+    <div class="tbl"><table class="vlist">
+      <thead><tr><th>Done</th><th>Week</th><th>Video</th><th>Lesson</th></tr></thead>
+      <tbody id="vlist"></tbody>
+    </table></div>
+  </div>
+  <div class="block">
+    <h3>Where to read</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Topic</th><th>Learning guide (printed page)</th><th>Klein 2e (book page)</th></tr></thead>
+      <tbody>
+        <tr><td>The four factors</td><td class="num">122–131</td><td>8.12–8.14, pp. 383–399 (the master chart is Fig. 8.31, p. 389)</td></tr>
+        <tr><td>S<sub>N</sub>1 / S<sub>N</sub>2</td><td class="num">122–140</td><td>7.1–7.8, pp. 288–326</td></tr>
+        <tr><td>Elimination</td><td class="num">141–152</td><td>8.1, 8.5–8.14, pp. 342, 353–399</td></tr>
+        <tr><td>Other substrates</td><td class="num">136–138, 150</td><td>13.9 pp. 603–608 · 14.5–14.6 pp. 641–646 · 14.10 pp. 654–662 · 23.9 pp. 1125–1127</td></tr>
+        <tr><td>Nucleophilic addition</td><td class="num">153–167</td><td>20.4–20.10 pp. 937–966 · 22.2–22.3 pp. 1052–1067</td></tr>
+        <tr><td>Acyl substitution</td><td class="num">168–173</td><td>21.5–21.13 pp. 992–1026</td></tr>
+        <tr><td>S<sub>N</sub>Ar</td><td class="num">117–121</td><td>19.13–19.15 pp. 914–919 · 23.10–23.11 pp. 1128–1134</td></tr>
+        <tr><td>Redox</td><td class="num">174–181</td><td>13.4 pp. 587–594 · 13.10 pp. 609–612 · 9.7–9.11 pp. 428–445 · 10.5 pp. 474–477</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted);font-size:13.5px">In the PDF files: learning guide page = printed page + 2; Klein page = book page + 24. Last guide page for this exam is p. 181; p. 182 is the reference list.</p>
+  </div>
+  <div class="block">
+    <h3>Lab Activity 9: nucleophilic reactions in qualitative analysis</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Test</th><th>What it detects</th><th>Positive result</th><th>Mechanism behind it</th></tr></thead>
+      <tbody>
+        <tr><td>Lucas reagent (ZnCl₂ in conc. HCl)</td><td>1°, 2°, 3° alcohols</td><td>cloudiness: 3° (and allylic, benzylic) at once; 2° in about 5–10 min; 1° no change at room temp</td><td>S<sub>N</sub>1: rate follows carbocation stability</td></tr>
+        <tr><td>AgNO₃ in ethanol</td><td>alkyl halides</td><td>AgX precipitate; fastest for 3°, allylic, benzylic</td><td>S<sub>N</sub>1: Ag⁺ pulls X⁻ off</td></tr>
+        <tr><td>NaI in acetone</td><td>alkyl chlorides, bromides</td><td>NaCl or NaBr precipitate; fastest for 1°, none for 3°</td><td>S<sub>N</sub>2: I⁻ displaces X⁻ (NaCl, NaBr don't dissolve in acetone)</td></tr>
+        <tr><td>2,4-DNPH</td><td>aldehydes and ketones</td><td>yellow, orange or red precipitate</td><td>addition, then loss of water (C=N–NHAr)</td></tr>
+        <tr><td>Iodoform (I₂, NaOH)</td><td>methyl ketones, CH₃CH(OH)–, ethanol, acetaldehyde</td><td>yellow CHI₃ precipitate</td><td>α-halogenation, then acyl substitution</td></tr>
+        <tr><td>NaHSO₃</td><td>aldehydes, methyl ketones</td><td>crystalline adduct</td><td>nucleophilic addition</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted);font-size:13.5px">Your lab manual has the final list and exact observations; these are the standard ones.</p>
+  </div>
+  <div class="block">
+    <h3>Lab Activity 10: redox reactions in qualitative analysis</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Test</th><th>Positive for</th><th>What you see</th></tr></thead>
+      <tbody>
+        <tr><td>Baeyer's (cold, dilute KMnO₄)</td><td>C=C, C≡C (also easily oxidized groups like aldehydes)</td><td>purple → brown MnO₂ precipitate</td></tr>
+        <tr><td>Chromic acid / Jones (Cr₂O₇²⁻, H⁺)</td><td>1° and 2° alcohols, aldehydes</td><td>orange → green or blue-green (Cr³⁺); 3° alcohols and ketones stay orange</td></tr>
+        <tr><td>Tollens' (Ag(NH₃)₂⁺)</td><td>all aldehydes</td><td>silver mirror</td></tr>
+        <tr><td>Benedict's / Fehling's (Cu²⁺ complex)</td><td>aliphatic aldehydes (and reducing sugars)</td><td>brick-red Cu₂O precipitate; aromatic aldehydes negative</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ============ START ============ -->
+<section class="view" id="v-start" hidden>
+  <div class="lesson-head">
+    <span class="tag">Start here · Topic outcome 1</span>
+    <h2>The four factors that decide S<sub>N</sub>1, S<sub>N</sub>2, E1 or E2</h2>
+    <p>Every substitution and elimination problem is answered by checking the same four things, in this order. Your guide spreads them over pp. 123–131; Klein condenses them into one chart (Fig. 8.31, p. 389).</p>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li><b>Reagent:</b> is it a strong nucleophile, a strong base, both, or neither?</li>
+      <li><b>Substrate:</b> 1° favors S<sub>N</sub>2; 3° favors S<sub>N</sub>1/E1 or E2; 2° can go any way.</li>
+      <li><b>Leaving group:</b> good leaving groups are weak bases (I⁻, Br⁻, TsO⁻, H₂O). –OH and –OR must be protonated first.</li>
+      <li><b>Solvent:</b> polar protic (water, alcohols) helps S<sub>N</sub>1; polar aprotic (DMSO, DMF, acetone) helps S<sub>N</sub>2.</li>
+      <li><b>Heat</b> pushes toward elimination.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Step 1 · Classify the reagent (Klein's four categories)</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Category</th><th>Examples</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><b>Nucleophile only</b> (strong Nu, weak base)</td><td>I⁻, Br⁻, Cl⁻, HS⁻, RS⁻, H₂S, RSH, CN⁻, N₃⁻</td><td>substitution only</td></tr>
+        <tr><td><b>Base only</b> (strong base, poor Nu)</td><td>H⁻ (NaH), DBU, DBN</td><td>elimination only (E2)</td></tr>
+        <tr><td><b>Strong nucleophile and strong base</b></td><td>HO⁻, CH₃O⁻, C₂H₅O⁻ (NaOH, NaOMe, NaOEt)</td><td>S<sub>N</sub>2 and E2 compete</td></tr>
+        <tr><td><b>Bulky strong base</b></td><td>t-BuO⁻ (t-BuOK)</td><td>E2, even on 1°; gives the less substituted alkene</td></tr>
+        <tr><td><b>Weak nucleophile and weak base</b></td><td>H₂O, CH₃OH, C₂H₅OH</td><td>S<sub>N</sub>1 and E1 (needs a 3° or resonance-stabilized substrate)</td></tr>
+      </tbody>
+    </table></div>
+    <p>Why the split? <b>Nucleophilicity</b> is about rate of attack on carbon and grows with charge and polarizability (big atoms like S and I). <b>Basicity</b> is about equilibrium with H⁺. H⁻ is a strong base but too small and unpolarizable to be a good nucleophile; I⁻ is the reverse. <span class="ref">Klein pp. 383–385, Fig. 8.25</span></p>
+  </div>
+  <div class="block">
+    <h3>Step 2 · Match with the substrate</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Reagent ↓ / substrate →</th><th>1°</th><th>2°</th><th>3°</th></tr></thead>
+      <tbody>
+        <tr><td>Nucleophile only</td><td>S<sub>N</sub>2</td><td>S<sub>N</sub>2 (some S<sub>N</sub>1)</td><td>S<sub>N</sub>1</td></tr>
+        <tr><td>Base only</td><td>E2</td><td>E2</td><td>E2</td></tr>
+        <tr><td>Strong Nu + strong base</td><td>S<sub>N</sub>2 major, E2 minor</td><td>E2 major, S<sub>N</sub>2 minor</td><td>E2 only</td></tr>
+        <tr><td>t-BuOK (bulky)</td><td>E2</td><td>E2</td><td>E2</td></tr>
+        <tr><td>Weak Nu + weak base</td><td>too slow</td><td>messy mixture</td><td>S<sub>N</sub>1 + E1 (heat → more E1)</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted);font-size:13.5px">Summarized from <span class="ref">Klein Figs. 8.26–8.31, pp. 387–389</span>. Allylic and benzylic 1° substrates also react by S<sub>N</sub>1, because their cations are resonance-stabilized.</p>
+  </div>
+  <div class="block">
+    <h3>Step 3 · Draw the product correctly</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Mechanism</th><th>Where</th><th>Stereochemistry</th></tr></thead>
+      <tbody>
+        <tr><td>S<sub>N</sub>2</td><td>Nu goes exactly where the leaving group was</td><td>inversion</td></tr>
+        <tr><td>S<sub>N</sub>1</td><td>where the leaving group was, unless the cation rearranges</td><td>racemization (slightly more inversion)</td></tr>
+        <tr><td>E2</td><td>Zaitsev (more substituted alkene), unless the base is bulky (Hofmann)</td><td>anti-periplanar H and L; trans favored</td></tr>
+        <tr><td>E1</td><td>Zaitsev, after any rearrangement</td><td>trans favored</td></tr>
+      </tbody>
+    </table></div>
+    <p style="color:var(--muted);font-size:13.5px"><span class="ref">Klein Table 8.2, p. 391</span></p>
+    <a class="goto" href="#predict">Drill this with the predictor →</a>
+  </div>
+  <div class="quiz" data-quiz="start"></div>
+</section>
+
+<!-- ============ PREDICT ============ -->
+<section class="view" id="v-predict" hidden>
+  <div class="lesson-head">
+    <span class="tag">Practice tool</span>
+    <h2>S<sub>N</sub>1, S<sub>N</sub>2, E1 or E2?</h2>
+    <p>Pick a substrate and a reagent to see which mechanism wins and why. Then test yourself on real reactions below.</p>
+  </div>
+  <div class="block">
+    <div class="calc-controls">
+      <label class="field" for="pr-sub">Substrate
+        <select id="pr-sub">
+          <option value="me">Methyl (CH₃–X)</option>
+          <option value="p1">Primary (1°)</option>
+          <option value="ab">1° allylic or benzylic</option>
+          <option value="p2" selected>Secondary (2°)</option>
+          <option value="p3">Tertiary (3°)</option>
+        </select></label>
+      <label class="field" for="pr-reag">Reagent
+        <select id="pr-reag">
+          <option value="nuc">Nucleophile only: I⁻, Br⁻, CN⁻, RS⁻, N₃⁻</option>
+          <option value="base">Base only: NaH, DBU, DBN</option>
+          <option value="both" selected>Strong Nu + base: OH⁻, MeO⁻, EtO⁻</option>
+          <option value="bulky">Bulky base: t-BuOK</option>
+          <option value="weak">Weak: H₂O, MeOH, EtOH</option>
+        </select></label>
+      <label class="field" for="pr-heat">Temperature
+        <select id="pr-heat"><option value="0">room temperature</option><option value="1">heated</option></select></label>
+    </div>
+    <div id="pr-out" class="feedback"></div>
+  </div>
+  <div class="block">
+    <h3>Test yourself</h3>
+    <p id="px-q" class="prompt" style="font-weight:600"></p>
+    <div class="opts" id="px-opts"></div>
+    <div id="px-fb" class="feedback" hidden></div>
+    <div class="qnav"><button type="button" class="btn" id="px-next">Next reaction</button><span class="progress" id="px-score" style="font-family:var(--f-mono);font-size:12.5px;color:var(--muted);align-self:center"></span></div>
+  </div>
+</section>
+
+<!-- ============ OTHER ============ -->
+<section class="view" id="v-other" hidden>
+  <div class="lesson-head">
+    <span class="tag">Week 12 · Substitution and elimination of other substrates · guide pp. 136–138, 150</span>
+    <h2>Alcohols, ethers, epoxides and charged substrates</h2>
+    <p>Same four mechanisms, different leaving groups. The trick in every case is how the bad leaving group (–OH, –OR, –NR₃⁺) gets turned into a good one.</p>
+    <div class="vids"><span class="vid" data-vid="os1"></span><span class="vid" data-vid="os2"></span><span class="vid" data-vid="os3"></span><span class="vid" data-vid="os4"></span></div>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li>–OH is a terrible leaving group (it would leave as OH⁻, a strong base). <b>Protonate it</b> (HX, H₂SO₄), complex it with a <b>Lewis acid</b> (ZnCl₂), or convert it (TsCl, SOCl₂, PBr₃).</li>
+      <li>ROH + HX: 3°, allylic, benzylic by S<sub>N</sub>1; methyl and 1° by S<sub>N</sub>2. HI &gt; HBr &gt; HCl.</li>
+      <li><b>Dehydration</b> (conc. H₂SO₄, heat): E1 for 2° and 3°, gives the Zaitsev alkene, and the cation can rearrange.</li>
+      <li><b>Ethers</b> survive base but are cleaved by hot HI or HBr.</li>
+      <li><b>Charged substrates</b> (R–NR₃⁺, R–SR₂⁺) eliminate to the <b>least</b> substituted alkene (Hofmann).</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Alcohols: turning –OH into a leaving group</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Reagent</th><th>Product</th><th>Mechanism and notes</th></tr></thead>
+      <tbody>
+        <tr><td>conc. HBr or HI</td><td>R–Br, R–I</td><td>–OH is protonated, leaves as H₂O. 3° by S<sub>N</sub>1, 1° by S<sub>N</sub>2. Works for all alcohols.</td></tr>
+        <tr><td>conc. HCl</td><td>R–Cl</td><td>only 3°, benzylic and allylic alcohols react readily</td></tr>
+        <tr><td>HCl + anhydrous ZnCl₂ (Lucas)</td><td>R–Cl</td><td>ZnCl₂ is a Lewis acid that grabs the O and weakens C–O. Needed for 1° and 2°; basis of the Lucas test.</td></tr>
+        <tr><td>SOCl₂ (pyridine)</td><td>R–Cl</td><td>1° and 2°; S<sub>N</sub>2, so no rearrangement and inversion at a stereocenter <span class="ref">Klein p. 604</span></td></tr>
+        <tr><td>PBr₃</td><td>R–Br</td><td>1° and 2°; S<sub>N</sub>2, inversion</td></tr>
+        <tr><td>TsCl, pyridine; then Nu⁻</td><td>R–OTs, then R–Nu</td><td>making the tosylate keeps the configuration; the S<sub>N</sub>2 step inverts it</td></tr>
+      </tbody>
+    </table></div>
+<pre class="mech">Reactivity of alcohols with HX:  benzylic, allylic > 3° > 2° > 1° > CH₃
+Reactivity of HX with alcohols:  HI > HBr > HCl > HF
+
+1° (SN2):  CH₃CH₂–OH + H⁺ ⇌ CH₃CH₂–OH₂⁺ ──Br⁻ (backside)──▶ CH₃CH₂Br + H₂O
+3° (SN1):  (CH₃)₃C–OH + H⁺ ⇌ (CH₃)₃C–OH₂⁺ ──−H₂O──▶ (CH₃)₃C⁺ ──Cl⁻──▶ (CH₃)₃C–Cl</pre>
+  </div>
+  <div class="block">
+    <h3>Dehydration of alcohols (elimination)</h3>
+<pre class="mech">R₂CH–C(OH)R₂ ──conc. H₂SO₄ or H₃PO₄, heat──▶ R₂C=CR₂ + H₂O
+
+ease:  3° > 2° > 1°
+2°, 3°: E1  (protonate –OH → lose H₂O → carbocation → lose β-H)
+1°:     E2  (base removes β-H as H₂O leaves from –OH₂⁺)</pre>
+    <ul>
+      <li>The more substituted (Zaitsev) alkene is the major product.</li>
+      <li>Watch for 1,2-shifts: 3,3-dimethyl-2-butanol gives mostly 2,3-dimethyl-2-butene after a methyl shift.</li>
+      <li>Temperature matters: ethanol + H₂SO₄ at about 140 °C gives diethyl ether (substitution); at about 180 °C it gives ethylene (elimination).</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Ethers: making and breaking them</h3>
+    <h4>Williamson ether synthesis (S<sub>N</sub>2)</h4>
+<pre class="mech">R–O⁻ Na⁺ + R′–X ──▶ R–O–R′ + NaX       R′ must be CH₃ or 1°</pre>
+    <p>Put the bulky part on the alkoxide. Ethyl isopropyl ether: sodium isopropoxide + ethyl chloride works; sodium ethoxide + isopropyl chloride mostly gives propene by E2.</p>
+    <h4>Acidic cleavage (HI or HBr, heat)</h4>
+<pre class="mech">CH₃–O–CH₂CH₂CH₃ + HI ──▶ CH₃I + CH₃CH₂CH₂OH       SN2 at the less hindered CH₃
+(CH₃)₃C–O–CH₃ + HI    ──▶ (CH₃)₃C–I + CH₃OH        SN1 through the 3° cation
+excess HI: both sides become alkyl iodides</pre>
+    <p>Ethers are not cleaved by SOCl₂ or PCl₃ (guide p. 138). An aryl ether (Ar–O–R) gives phenol + R–X, because the ring carbon can't do S<sub>N</sub>1 or S<sub>N</sub>2. <span class="ref">Klein p. 645</span></p>
+  </div>
+  <div class="block">
+    <h3>Epoxides: strained ethers <span class="pill">Klein only</span></h3>
+    <p>Your guide doesn't cover these, so check whether your videos do. The three-membered ring is strained enough that even alkoxide can leave.</p>
+<pre class="mech">strong Nu⁻ (OH⁻, RO⁻, CN⁻, RMgX, LiAlH₄):  attack the LESS substituted C   (SN2, inversion)
+acid + weak Nu (H₃O⁺, ROH/H⁺, HX):         attack the MORE substituted C   (when it's 3°)</pre>
+    <p><span class="ref">Klein 14.10, pp. 654–662</span></p>
+  </div>
+  <div class="block">
+    <h3>Charged substrates: Hofmann elimination</h3>
+<pre class="mech">CH₃CH₂CH(N⁺(CH₃)₃)CH₃  OH⁻, heat ──E2──▶ CH₃CH₂CH=CH₂ (major, 95%) + CH₃CH=CHCH₃ (5%)</pre>
+    <p>Quaternary ammonium and sulfonium salts give mainly the <b>least</b> substituted alkene (Hofmann rule), the opposite of Zaitsev. The big, charged leaving group and steric crowding make the base take the most accessible β-H. Compare 2-bromobutane + KOEt, which gives mainly 2-butene. <span class="ref">guide p. 145 · Klein 23.9, pp. 1125–1127</span></p>
+  </div>
+  <div class="quiz" data-quiz="other"></div>
+</section>
+
+<!-- ============ SN ============ -->
+<section class="view" id="v-sn" hidden>
+  <div class="lesson-head">
+    <span class="tag">Week 12 · Nucleophilic substitution at saturated carbons · guide pp. 122–140</span>
+    <h2>Nucleophilic substitution at saturated carbon</h2>
+    <p>A nucleophile replaces a leaving group on an sp<sup>3</sup> carbon of an alkyl halide, alcohol or ether.</p>
+    <div class="vids"><span class="vid" data-vid="sn1"></span><span class="vid" data-vid="sn2"></span><span class="vid" data-vid="sn3"></span><span class="vid" data-vid="sn4"></span></div>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li><b>S<sub>N</sub>2:</b> one step, rate = k[RX][Nu], backside attack, <b>inversion</b>. CH₃ &gt; 1° &gt; 2°; never 3°. Needs a strong Nu; polar aprotic solvent helps.</li>
+      <li><b>S<sub>N</sub>1:</b> two steps through a carbocation, rate = k[RX], <b>racemization</b>, rearrangements possible. 3° &gt; 2°; allylic and benzylic too. Weak Nu, polar protic solvent.</li>
+      <li><b>Nucleophile strength:</b> anion &gt; neutral; bigger atom more polarizable; in protic solvents I⁻ &gt; Br⁻ &gt; Cl⁻ &gt; F⁻ (reversed in aprotic).</li>
+      <li><b>Leaving group:</b> the weaker the base, the better. TsO⁻ &gt; I⁻ &gt; Br⁻ ≈ H₂O &gt; Cl⁻ » F⁻; OH⁻, RO⁻, H⁻, R⁻ don't leave.</li>
+      <li><b>Solvolysis</b> looks first-order either way, so kinetics alone can't identify the mechanism.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Players</h3>
+<pre class="mech">Nu:⁻  +  R–L  ──▶  Nu–R  +  :L⁻
+nucleophile  substrate  product  leaving group</pre>
+    <ul>
+      <li><b>Nucleophile:</b> an anion or a neutral species with an unshared electron pair to form a new bond to carbon.</li>
+      <li><b>Reactive site:</b> a saturated C attached to L, which is usually more electronegative than C, so the C is δ+.</li>
+      <li><b>Leaving group:</b> leaves with the bonding pair (heterolytic cleavage), so it is itself a nucleophile.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>The experimental facts, and the two mechanisms they point to</h3>
+    <div class="two">
+      <div><h4>1° R–L → S<sub>N</sub>2</h4>
+        <p>Rate ∝ [R–L][Nu<sup>−</sup>]. Product is <b>inverted</b>.</p>
+<pre class="mech">Nu⁻ + C–L ──▶ [Nu···C···L]‡ ──▶ Nu–C + L⁻
+one concerted step; backside attack</pre>
+        <ul><li>The TS involves two species: <b>bimolecular</b>, second order.</li><li>L is still attached when Nu arrives, so Nu must come from the back. This gives <b>Walden inversion</b>.</li></ul></div>
+      <div><h4>3° R–L → S<sub>N</sub>1</h4>
+        <p>Rate ∝ [R–L], independent of Nu<sup>−</sup>. Product is partly <b>racemized</b>, with slightly more inversion.</p>
+<pre class="mech">step 1 (slow):  R–L ──▶ R⁺ + L⁻   (ionization)
+step 2 (fast):  R⁺ + Nu⁻ ──▶ R–Nu</pre>
+        <ul><li>Only one species in the slow step: <b>unimolecular</b>, first order.</li><li>The carbocation is planar, so Nu can attack either face.</li></ul></div>
+    </div>
+    <p>For 2° R–L, kinetics and stereochemistry are not fixed; either pathway can operate depending on conditions.</p>
+  </div>
+  <div class="block">
+    <h3>Factor A: substrate structure</h3>
+    <div class="two">
+      <div><h4>S<sub>N</sub>1 depends on carbocation stability</h4>
+<pre class="mech">3° » 2° > 1° > CH₃</pre>
+        <p>3° cations are stabilized by C–H hyperconjugation, the +I effect of R groups, and steric acceleration (going from sp<sup>3</sup> to sp<sup>2</sup> relieves crowding). 1° and methyl substrates do not react by S<sub>N</sub>1 unless R is <b>allyl, propargyl or benzyl</b>, whose cations are resonance-stabilized.</p></div>
+      <div><h4>S<sub>N</sub>2 depends on steric hindrance</h4>
+<pre class="mech">CH₃ > 1° > 2° > 3°</pre>
+        <p>In the TS the carbon carries five groups and is crowded. S<sub>N</sub>2 is not known to occur at 3° carbons.</p></div>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Halide (S<sub>N</sub>1 conditions)</th><th class="num">Relative rate</th></tr></thead>
+      <tbody>
+        <tr><td class="chem">CH₃CH₂X</td><td class="num">1.0</td></tr>
+        <tr><td class="chem">CH₂=CHCH₂X (allyl)</td><td class="num">33</td></tr>
+        <tr><td class="chem">C₆H₅CH₂X (benzyl)</td><td class="num">380</td></tr>
+        <tr><td class="chem">(C₆H₅)₂CHX</td><td class="num">~10⁵</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="block">
+    <h3>Factor B: the nucleophile</h3>
+    <p><b>Basicity</b> is about an equilibrium with a proton. <b>Nucleophilicity</b> is about the rate of reaction with carbon. Nu strength matters only for S<sub>N</sub>2, since in S<sub>N</sub>1 Nu is not in the slow step.</p>
+    <ol>
+      <li><b>Charge:</b> an anion beats its conjugate acid. OH<sup>−</sup> > H<sub>2</sub>O; RO<sup>−</sup> > ROH.</li>
+      <li><b>Basicity:</b> with the same nucleophilic atom, nucleophilicity parallels basicity: RO<sup>−</sup> > HO<sup>−</sup> > RCOO<sup>−</sup> > ROH > H<sub>2</sub>O.</li>
+      <li><b>Polarizability:</b> bigger atoms hold outer electrons more loosely, so they are better nucleophiles.</li>
+      <li><b>Solvation:</b> protic solvents H-bond to anions and weaken them. In protic solvents <b>I<sup>−</sup> > Br<sup>−</sup> > Cl<sup>−</sup> > F<sup>−</sup></b> (F<sup>−</sup> is most solvated). In aprotic solvents the order reverses: <b>F<sup>−</sup> > Cl<sup>−</sup> > Br<sup>−</sup> > I<sup>−</sup></b>.</li>
+      <li><b>Size and shape:</b> bulky nucleophiles are slowed in S<sub>N</sub>2.</li>
+    </ol>
+    <p>S<sub>N</sub>1 typically uses weak neutral nucleophiles (H<sub>2</sub>O, ROH). S<sub>N</sub>2 needs strong ones (OH<sup>−</sup>, RO<sup>−</sup>, R<sub>3</sub>N).</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Nucleophile (protic solvent)</th><th>Source</th><th class="num">Relative S<sub>N</sub>2 rate</th></tr></thead>
+      <tbody>
+        <tr><td>RS<sup>−</sup></td><td>R–SH in base</td><td class="num">500,000</td></tr>
+        <tr><td>CN<sup>−</sup></td><td>KCN, NaCN</td><td class="num">5,000</td></tr>
+        <tr><td>I<sup>−</sup></td><td>KI, NaI</td><td class="num">4,000</td></tr>
+        <tr><td>HO<sup>−</sup>, CH<sub>3</sub>O<sup>−</sup>, C<sub>2</sub>H<sub>5</sub>O<sup>−</sup></td><td>KOH/NaOH, alcohols in base</td><td class="num">1,000</td></tr>
+        <tr><td>Br<sup>−</sup></td><td>KBr, NaBr</td><td class="num">500</td></tr>
+        <tr><td>C<sub>6</sub>H<sub>5</sub>O<sup>−</sup></td><td>phenol in base</td><td class="num">400</td></tr>
+        <tr><td>Cl<sup>−</sup></td><td>KCl, NaCl</td><td class="num">100</td></tr>
+        <tr><td>CH<sub>3</sub>COO<sup>−</sup></td><td>K or Na salt</td><td class="num">20</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="block">
+    <h3>Factor C: the leaving group</h3>
+    <p>A good leaving group leaves as a stable, <b>weak base</b>. Neutral molecules are better than the corresponding ions. –OH and –OR are poor until <b>protonated</b>, when they leave as H<sub>2</sub>O or ROH. H<sup>−</sup> and R<sup>−</sup> never leave.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Leaving group</th><th class="num">Relative rate</th></tr></thead>
+      <tbody>
+        <tr><td>p-CH<sub>3</sub>C<sub>6</sub>H<sub>4</sub>SO<sub>3</sub><sup>−</sup> (tosylate)</td><td class="num">6</td></tr>
+        <tr><td>I<sup>−</sup></td><td class="num">3</td></tr>
+        <tr><td>Br<sup>−</sup></td><td class="num">1</td></tr>
+        <tr><td>H<sub>2</sub>O (from –OH<sub>2</sub><sup>+</sup>)</td><td class="num">1</td></tr>
+        <tr><td>(CH<sub>3</sub>)<sub>2</sub>S</td><td class="num">0.5</td></tr>
+        <tr><td>Cl<sup>−</sup></td><td class="num">0.02</td></tr>
+        <tr><td>F<sup>−</sup></td><td class="num">0.0001</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Catalysis</h4>
+    <ul>
+      <li><b>Iodide catalysis:</b> I<sup>−</sup> is both a strong nucleophile and a good leaving group. Adding KI to R–CH<sub>2</sub>Cl + H<sub>2</sub>O first makes R–CH<sub>2</sub>I, which water then attacks quickly.</li>
+      <li><b>Electrophilic catalysis:</b> H<sup>+</sup> or a Lewis acid (BX<sub>3</sub>, AlX<sub>3</sub>, ZnCl<sub>2</sub>) complexes the O of an alcohol or ether so it leaves as H<sub>2</sub>O or ROH. Ag<sup>+</sup> pulls X<sup>−</sup> off R–X by precipitating AgX.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Factor D: the solvent</h3>
+    <p><b>Polarity</b> (dielectric constant) helps reactions that create or separate charge. S<sub>N</sub>1 forms ions in its slow step, so it speeds up a lot in polar solvents. Water (80) is the best ionizing solvent, but organic compounds dissolve poorly in it, so mixed solvents like EtOH–H<sub>2</sub>O are used; more water means more polar.</p>
+    <div class="two">
+      <div class="tbl"><table>
+        <thead><tr><th>Solvent</th><th class="num">Dielectric const.</th></tr></thead>
+        <tbody>
+          <tr><td>water</td><td class="num">80</td></tr><tr><td>formic acid</td><td class="num">59</td></tr>
+          <tr><td>DMSO</td><td class="num">49</td></tr><tr><td>DMF</td><td class="num">37</td></tr>
+          <tr><td>acetonitrile</td><td class="num">36</td></tr><tr><td>methanol</td><td class="num">33</td></tr>
+          <tr><td>ethanol</td><td class="num">24</td></tr><tr><td>acetone</td><td class="num">21</td></tr>
+          <tr><td>acetic acid</td><td class="num">6</td></tr>
+        </tbody></table></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Reaction type</th><th>More polar solvent</th></tr></thead>
+        <tbody>
+          <tr><td>S<sub>N</sub>1: R–L → R<sup>+</sup> + L<sup>−</sup></td><td>large acceleration</td></tr>
+          <tr><td>S<sub>N</sub>2: Nu<sup>−</sup> + R–L → R–Nu + L<sup>−</sup></td><td>small deceleration</td></tr>
+          <tr><td>S<sub>N</sub>2: Nu + R–L → R–Nu<sup>+</sup> + L<sup>−</sup></td><td>large acceleration</td></tr>
+          <tr><td>S<sub>N</sub>2: Nu<sup>−</sup> + R–L<sup>+</sup> → R–Nu + L</td><td>large deceleration</td></tr>
+        </tbody></table></div>
+    </div>
+    <p>Rule: making ions from neutral molecules is accelerated by polar solvents; making neutral molecules from ions is slowed.</p>
+    <p><b>Protic vs aprotic:</b> protic solvents (H<sub>2</sub>O, ROH) H-bond to the nucleophile, which shields it and slows S<sub>N</sub>2. <b>Polar aprotic solvents</b> (DMF, DMSO, DMA, HMPT) solvate cations but leave the anion free. CH<sub>3</sub>I + NaN<sub>3</sub> runs about <b>100,000 times faster in DMF than in methanol</b>, even though their polarities are similar.</p>
+  </div>
+  <div class="block">
+    <h3>Solvolysis</h3>
+    <p>The solvent is the nucleophile: <b>hydrolysis</b> (water), <b>methanolysis</b> (methanol). Solvents are weak nucleophiles, so solvolysis usually goes by S<sub>N</sub>1, but with 1° substrates the large excess of solvent can push S<sub>N</sub>2. Because [solvent] stays constant, the kinetics look first-order either way (pseudo first-order: rate = k[solvent][RL] = k′[RL]), so kinetics alone cannot tell you the mechanism.</p>
+  </div>
+  <div class="block">
+    <h3>Stereochemistry, cyclization and rearrangement</h3>
+    <ul>
+      <li>(S)-2-bromobutane + OH<sup>−</sup> under S<sub>N</sub>2 conditions → <b>(R)-2-butanol</b> (inverted).</li>
+      <li>Under S<sub>N</sub>1 conditions → a mixture of (R)- and (S)-2-butanol (racemization).</li>
+      <li><b>Cyclization</b> is an intramolecular S<sub>N</sub>: it happens when a second group in the molecule has a lone pair and sits 3–5 atoms from the reacting carbon.</li>
+      <li><b>Carbocation rearrangement (1,2-shift):</b> an H (hydride shift), alkyl (methyl shift) or aryl group moves with its electron pair from the neighboring carbon if this makes a more stable cation.</li>
+    </ul>
+<pre class="mech">(CH₃)₃C–CHBr–CH₃ + CH₃OH ──▶ (CH₃)₃C–CH(OCH₃)–CH₃      expected     4 %
+                           ──▶ (CH₃)₂C(OCH₃)–CH(CH₃)₂   rearranged  41 %
+2° cation ──1,2-methyl shift──▶ 3° cation   (the rest is elimination)</pre>
+  </div>
+  <div class="block">
+    <h3>Functional groups that undergo S<sub>N</sub></h3>
+    <h4>Alkyl halides</h4>
+    <p>Reactivity R–I > R–Br > R–Cl > R–F. Methyl, 1° and 2° halides go S<sub>N</sub>2 with good nucleophiles (OH<sup>−</sup>, OR<sup>−</sup>, CN<sup>−</sup>). 3° halides go S<sub>N</sub>1 with H<sub>2</sub>O, ROH. Allylic and benzylic halides react quickly by either path.</p>
+    <h4>Alcohols</h4>
+    <p>Substitute only in <b>acid</b>, because –OH must become –OH<sub>2</sub><sup>+</sup> to leave. Reactivity toward HX: benzylic, allylic > 3° > 2° > 1° > methyl. HX reactivity: HI > HBr > HCl > HF. All alcohols react with conc. HBr or HI. With conc. HCl, only 3°, benzyl and allyl alcohols react readily; 1° and 2° need anhydrous ZnCl<sub>2</sub> and heat (the <b>Lucas test</b>). 2°, 3°, allylic, benzylic → S<sub>N</sub>1; methyl and 1° → S<sub>N</sub>2.</p>
+    <h4>Ethers</h4>
+    <p>Cleaved by HI or HBr (not by SOCl<sub>2</sub> or PCl<sub>3</sub>). CH<sub>3</sub>–O–CH<sub>2</sub>CH<sub>2</sub>CH<sub>3</sub> + HI → CH<sub>3</sub>I + propanol (S<sub>N</sub>2 at the less hindered methyl). (CH<sub>3</sub>)<sub>3</sub>C–OCH<sub>3</sub> + HI → (CH<sub>3</sub>)<sub>3</sub>C–I + CH<sub>3</sub>OH (S<sub>N</sub>1 via the 3° cation).</p>
+  </div>
+  <div class="block">
+    <h3>Williamson ether synthesis</h3>
+<pre class="mech">M⁺ ⁻OR  +  R′–L  ──SN2──▶  R–O–R′  +  M⁺L⁻
+alkoxide: R = CH₃, 1°, 2°, 3°, Ar     halide: R′ = CH₃ or 1° (L = –X, –OSO₂OR)</pre>
+    <p>Put the bulky part on the alkoxide and keep the halide methyl or primary. A 2° or 3° halide with a strong-base alkoxide gives elimination instead. Example: ethyl isopropyl ether is best made from sodium isopropoxide + ethyl chloride. Phenoxide + dimethyl sulfate gives anisole.</p>
+  </div>
+  <div class="block">
+    <h3>Summary</h3>
+    <div class="tbl"><table>
+      <thead><tr><th></th><th>S<sub>N</sub>1</th><th>S<sub>N</sub>2</th></tr></thead>
+      <tbody>
+        <tr><td>Mechanism</td><td>two steps (carbocation)</td><td>one step (concerted)</td></tr>
+        <tr><td>Kinetics</td><td>first order</td><td>second order</td></tr>
+        <tr><td>Nucleophile</td><td>unimportant to rate</td><td>controls rate; needs a strong Nu</td></tr>
+        <tr><td>Substrate</td><td>3° » 2° > 1° (resonance stabilization helps)</td><td>CH<sub>3</sub> > 1° > 2° > 3° (steric hindrance hurts)</td></tr>
+        <tr><td>Solvent</td><td>polar, ionizing</td><td>polar aprotic</td></tr>
+        <tr><td>Stereochemistry</td><td>racemization (+ some inversion)</td><td>inversion</td></tr>
+        <tr><td>Conditions</td><td>acidic or neutral</td><td>basic or neutral</td></tr>
+        <tr><td>Competing reactions</td><td>E1, rearrangement</td><td>E2</td></tr>
+      </tbody>
+    </table></div>
+    <div class="key"><b>Exercise IV.6:</b> Raising [Nu] speeds up only the reactions that go S<sub>N</sub>2 (1° halides with CN<sup>−</sup> or NH<sub>3</sub>). Propyl iodide + NaOH is faster in DMSO than in methanol.</div>
+  </div>
+    <div class="edge">
+    <span class="lbl">Klein extras · Ch. 7</span>
+    <h3>Details that earn the extra point</h3>
+    <figure class="dg"><div class="sv"><svg viewBox="0 0 560 200" role="img" aria-label="Energy diagrams: SN2 has one transition state; SN1 has two transition states with a carbocation intermediate between them">
+      <line class="ax" x1="20" y1="20" x2="20" y2="180"/><line class="ax" x1="20" y1="180" x2="260" y2="180"/>
+      <line class="ax" x1="300" y1="20" x2="300" y2="180"/><line class="ax" x1="300" y1="180" x2="540" y2="180"/>
+      <text class="p" x="40" y="16">SN2: one step</text><text class="a" x="320" y="16">SN1: two steps</text>
+      <path class="lp" d="M30,120 H60 C95,120 100,45 125,45 C150,45 160,140 200,140 H250"/>
+      <circle class="dot" cx="125" cy="45" r="3"/><text x="102" y="36">[Nu···C···L]‡</text>
+      <path class="la" d="M310,130 H330 C360,130 365,40 385,40 C400,40 405,85 420,85 C432,85 438,62 450,62 C465,62 475,150 505,150 H535"/>
+      <circle class="dot" cx="385" cy="40" r="3"/><text x="370" y="32">TS 1</text>
+      <circle class="dot" cx="420" cy="85" r="3"/><text x="398" y="104">R⁺</text>
+      <circle class="dot" cx="450" cy="62" r="3"/><text x="448" y="54">TS 2</text>
+      <text class="m" x="30" y="114">RX + Nu⁻</text><text class="m" x="196" y="134">R–Nu + L⁻</text>
+      <text class="m" x="310" y="124">RX</text><text class="m" x="495" y="144">R–Nu</text>
+    </svg></div><figcaption>The slow step in S<sub>N</sub>1 is the first hump (ionization), which is why only [RX] appears in the rate law. Drawn from scratch after <span class="ref">Klein Sec. 7.4–7.5, pp. 296–309</span></figcaption></figure>
+    <ul>
+      <li><b>Steric hindrance one carbon over still counts:</b> neopentyl bromide is primary, but its bulky neighbor makes S<sub>N</sub>2 extremely slow. <span class="ref">p. 300</span></li>
+      <li><b>Walden inversion</b> is the name for the S<sub>N</sub>2 flip; draw the nucleophile coming in 180° from the leaving group. <span class="ref">p. 297</span></li>
+      <li><b>Polar aprotic solvents to memorize:</b> DMSO, DMF, acetone, acetonitrile (also HMPA). They wrap the cation and leave the anion "naked". <span class="ref">pp. 324–325</span></li>
+      <li><b>Turning OH into a leaving group without acid:</b> convert to a tosylate (TsCl, pyridine), then do S<sub>N</sub>2. The tosylation step keeps the configuration. <span class="ref">pp. 324, 328</span></li>
+      <li><b>Klein's three-question method</b> for "which mechanism?": substrate, nucleophile strength, then leaving group and solvent. <span class="ref">7.8, pp. 320–326</span></li>
+    </ul>
+  </div>
+  <div class="quiz" data-quiz="sn"></div>
+</section>
+
+<!-- ============ ELIM ============ -->
+<section class="view" id="v-elim" hidden>
+  <div class="lesson-head">
+    <span class="tag">Week 12 · Elimination reactions · guide pp. 133, 141–152</span>
+    <h2>Elimination reactions</h2>
+    <p>Elimination always competes with substitution. Instead of attacking carbon, the base removes a β-H, and a C=C forms as the leaving group departs. No β-H means no elimination.</p>
+    <div class="vids"><span class="vid" data-vid="e1"></span><span class="vid" data-vid="e2"></span><span class="vid" data-vid="e3"></span></div>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li><b>E2:</b> one step, rate = k[RX][base], H and L <b>anti-periplanar</b> (both axial in a cyclohexane).</li>
+      <li><b>E1:</b> carbocation first, rate = k[RX]; 3° with weak base, often alongside S<sub>N</sub>1; can rearrange.</li>
+      <li><b>E beats S</b> with: strong or bulky base, crowded substrate, less polar solvent, <b>heat</b>, EWG on the β-carbon.</li>
+      <li><b>Zaitsev:</b> neutral substrates give the more substituted alkene. <b>Hofmann:</b> charged substrates (R–NR₃⁺) or bulky bases give the less substituted one.</li>
+      <li>The <b>trans (E)</b> alkene is usually favored.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>The two mechanisms</h3>
+    <div class="two">
+      <div><h4>E2: one step, bimolecular</h4>
+<pre class="mech">B:⁻ + H–Cβ–Cα–L ──▶ C=C + B–H + L⁻
+rate = k[substrate][base]</pre>
+        <p>The base pulls off the β-H at the same time as L leaves from the neighboring carbon.</p></div>
+      <div><h4>E1: two steps, unimolecular</h4>
+<pre class="mech">1. (CH₃)₃C–Br ──slow──▶ (CH₃)₃C⁺ + Br⁻
+2. base removes β-H ──▶ (CH₃)₂C=CH₂
+rate = k[substrate]</pre>
+        <p>Seen with 3° (sometimes 2°) substrates, weak or dilute base, and conditions that favor carbocations, such as solvolysis. Rearrangements are possible.</p></div>
+    </div>
+    <p>A stronger or more concentrated base shifts things toward E2, for 1° and 3° substrates alike. Pulling off an outer H is little affected by crowding, unlike attack at a hindered carbon.</p>
+  </div>
+  <div class="block">
+    <h3>Elimination vs substitution</h3>
+    <p>Substitution needs less bond reorganization and usually wins, but these factors shift the balance toward elimination:</p>
+    <ol>
+      <li><b>Strong base.</b> E needs a strong base; S needs a good nucleophile. 2-Bromopropane with NaOEt/EtOH gives 79% propene and 21% ether. In plain EtOH, the weakly basic solvent gives 3% alkene and 97% ether. RS<sup>−</sup> is a good nucleophile but a weak base, so it gives mainly substitution.</li>
+      <li><b>Crowded substrate</b> (and bulky base). Crowding is relieved when groups leave, the β-H is easier to reach than the crowded carbon, and more substituted substrates give more alkylated, more stable alkenes.</li>
+      <li><b>Less polar solvent.</b> The E transition state spreads the charge over more atoms (5 vs 3), so it is favored by lower solvent polarity.</li>
+      <li><b>Higher temperature.</b> 2-Bromopropane + NaOH in EtOH/H<sub>2</sub>O: 53% E at 45 °C, 64% E at 100 °C. t-Butyl chloride: 17% E at 25 °C, 64% E at 65 °C.</li>
+      <li><b>Electron-withdrawing group on the β-carbon</b> makes the β-H more acidic.</li>
+    </ol>
+  </div>
+  <div class="block">
+    <h3>Direction of elimination (regioselectivity)</h3>
+    <ul>
+      <li><b>Saytzeff (Zaitsev) rule:</b> neutral substrates give mainly the <b>more substituted</b> alkene. The preference is moderate and stronger in E1 than in E2. 2-Bromobutane + KOEt gives mainly 2-butene.</li>
+      <li><b>Hofmann rule (anti-Saytzeff):</b> charged substrates (quaternary ammonium, sulfonium salts) give mainly the <b>less substituted</b> alkene, strongly, usually by E2. Bulky bases such as t-BuOK also push toward the less substituted alkene.</li>
+    </ul>
+    <p>Contributing factors: stability of the developing alkene, steric effects in the substrate and the base at the transition state, solvation, and base–leaving-group interaction.</p>
+  </div>
+  <div class="block">
+    <h3>Stereochemistry of elimination</h3>
+    <p>The C–H and C–L bonds must lie in one plane for the new π bond to form. They can be <b>syn-periplanar</b> (same side, eclipsed) or <b>anti-periplanar</b> (opposite sides, staggered). <b>Anti elimination is the usual course</b>, because the staggered arrangement is lower in energy. Elimination is <b>stereoselective</b>: the isomer with the bulkiest groups on opposite sides (E/trans) usually predominates.</p>
+    <ul>
+      <li>If there is only one β-H, E2 gives only the one alkene that anti elimination allows. (2S,3R)-2-chloro-3-pentanol gives (E)-2-penten-3-ol; (2S,3S) gives the (Z) isomer.</li>
+      <li>E1 gives both E and Z, with E (bulky groups apart) as the major product.</li>
+      <li><b>Cyclohexanes:</b> L and the β-H must both be <b>axial</b> (trans-diaxial). A conformer with a bulky group forced axial is rare, so a compound whose stable conformer has L equatorial reacts slowly.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Common eliminations</h3>
+<pre class="mech">Dehydrohalogenation:  CH₃CHClCH₂CH₃ + KOEt/EtOH ──▶ CH₃CH=CHCH₃ (major) + CH₂=CHCH₂CH₃
+Dehydration:          RCH₂CH₂OH ──H₂SO₄, heat──▶ RCH=CH₂ + H₂O   (3° > 2° > 1°)</pre>
+    <div class="key"><b>Exercise IV.7:</b> A strong base like NaOH or NaOEt favors E2 over E1. 2-Bromobutane gives (E)- and (Z)-2-butene. Ethyl isopropyl ether should be made from sodium isopropoxide + ethyl chloride, because sodium ethoxide + isopropyl chloride mainly gives E2.</div>
+  </div>
+    <div class="edge">
+    <span class="lbl">Klein extras · Ch. 8</span>
+    <h3>Regio and stereo rules for eliminations</h3>
+    <ul>
+      <li><b>Base size picks the alkene.</b> A small base like NaOEt gives mostly the Zaitsev (more substituted) alkene; bulky t-BuOK gives mostly the Hofmann (less substituted) one. <span class="ref">pp. 361–363</span></li>
+      <li><b>Alkene stability:</b> more substituted is more stable, and trans is more stable than cis. That's why Zaitsev and trans products dominate. <span class="ref">8.5, p. 353</span></li>
+      <li><b>E2 is stereospecific:</b> when the β-carbon has only one H, anti-periplanar geometry forces a single alkene isomer. Draw a Newman projection with H and L anti to find it. <span class="ref">8.7, pp. 358–371</span></li>
+      <li><b>Cyclohexanes:</b> L must be axial. If the ring's stable chair puts L equatorial, E2 is slow and may give an unexpected (non-Zaitsev) alkene. <span class="ref">8.7, pp. 358–371</span></li>
+      <li><b>Don't expect one winner.</b> Klein's advice: list every product and label major and minor. 2° + NaOEt gives E2 major, S<sub>N</sub>2 minor. <span class="ref">p. 383</span></li>
+      <li><b>One-glance summary:</b> Table 8.2 (regio and stereo for all four mechanisms, p. 391) and Fig. 8.31 (master chart, p. 389).</li>
+    </ul>
+  </div>
+  <div class="quiz" data-quiz="elim"></div>
+</section>
+
+<!-- ============ AN ============ -->
+<section class="view" id="v-an" hidden>
+  <div class="lesson-head">
+    <span class="tag">Week 13 · "Nucleophilic acyl addition" in your video list · guide pp. 153–167</span>
+    <h2>Nucleophilic addition to aldehydes and ketones</h2>
+    <p>The carbonyl carbon is δ+ and attracts nucleophiles. Aldehydes and ketones <b>add</b> rather than substitute because their would-be leaving groups, H<sup>−</sup> and R<sup>−</sup>, are extremely poor.</p>
+    <div class="vids"><span class="vid" data-vid="na1"></span><span class="vid" data-vid="na2"></span><span class="vid" data-vid="na3"></span><span class="vid" data-vid="na4"></span></div>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li>Aldehydes and ketones <b>add</b> rather than substitute, because H⁻ and R⁻ can't leave.</li>
+      <li>Reactivity: HCHO &gt; RCHO &gt; R₂CO (alkyl groups donate electrons and add bulk).</li>
+      <li>Strong-base nucleophiles (H⁻, R⁻, CN⁻) add directly; weak ones (H₂O, ROH, RNH₂) need an acid catalyst. Most additions are reversible.</li>
+      <li>Know the products: cyanohydrin, hemiacetal → acetal, imine/oxime/hydrazone, aldol, Cannizzaro, iodoform.</li>
+      <li>Grignard: HCHO → 1° alcohol, RCHO → 2°, ketone → 3°.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>What makes C=O reactive</h3>
+    <ol>
+      <li>Electrophilic carbonyl C: open to nucleophilic attack.</li>
+      <li>Nucleophilic carbonyl O: open to electrophilic attack, usually by H<sup>+</sup>.</li>
+      <li>Acidic α-H: the α-C can become carbanionic, leading to enols and enolates.</li>
+      <li>sp<sup>2</sup> carbonyl C can share π delocalization with neighboring groups, which changes reactivity.</li>
+    </ol>
+<pre class="mech">R–C(=O)–H(R) + H–Nu ──▶ R–C(OH)(Nu)–H(R)     (the adduct)</pre>
+  </div>
+  <div class="block">
+    <h3>Acid- vs base-catalyzed addition</h3>
+    <div class="two">
+      <div><h4>A · Acid-catalyzed (weak Nu–H)</h4>
+<pre class="mech">1. C=O + H⁺ ──▶ C=OH⁺   (C more positive)
+2. Nu–H attacks C, then loses H⁺</pre></div>
+      <div><h4>B · Base-catalyzed (strong Nu⁻)</h4>
+<pre class="mech">1. Nu⁻ attacks C ──▶ alkoxide C–O⁻
+2. O⁻ takes H⁺ from H–Nu or water</pre></div>
+    </div>
+    <p>The steps are the same, in reverse order. These additions are <b>reversible</b>, so the outcome depends on the equilibrium (K<sub>eq</sub>). S<sub>N</sub> reactions are essentially irreversible and depend on rates.</p>
+  </div>
+  <div class="block">
+    <h3>Factors in carbonyl reactivity</h3>
+    <ol>
+      <li><b>Resonance</b> with adjacent π electrons (as in aryl ketones) stabilizes C=O and lowers reactivity.</li>
+      <li><b>Inductive effects:</b> −I groups (e.g. Cl on the α-C) make C more positive and more reactive. +I groups (alkyls) lower reactivity.</li>
+      <li><b>Steric effects:</b> bulky groups crowd the tetrahedral adduct and lower reactivity.</li>
+    </ol>
+    <div class="key"><b>Aldehydes are more reactive than ketones:</b> the second R on a ketone donates electrons (+I) and is bulkier than H. Order: HCHO > RCHO > R<sub>2</sub>CO, with aryl carbonyls lower still.</div>
+  </div>
+  <div class="block">
+    <h3>A. Simple addition</h3>
+    <h4>1 · HCN: cyanohydrins</h4>
+<pre class="mech">R–CO–H(R) + HCN ──(CN⁻ catalyst)──▶ R–C(OH)(CN)–H(R)   cyanohydrin
+   ├─ H₃O⁺ ──▶ α-hydroxy acid  R–C(OH)(COOH)
+   └─ reduction ──▶ β-amino alcohol  R–C(OH)–CH₂NH₂</pre>
+    <p>HCN (a very toxic gas) is a poor nucleophile and adds slowly. KCN or a base supplies CN<sup>−</sup>, which attacks first (mechanism B). A new C–C bond forms and the product has two functional groups.</p>
+    <h4>2 · Sodium bisulfite</h4>
+    <p>C=O + NaHSO<sub>3</sub> → crystalline bisulfite adduct. This is used to separate aldehydes and ketones from mixtures. Most aldehydes give 70–90%; methyl ketones only 12–56% because of steric hindrance.</p>
+    <h4>3 · Grignard reagents and hydrides</h4>
+    <p>R′MgX adds R′<sup>−</sup> to the carbonyl C; after H<sub>3</sub>O<sup>+</sup> workup: HCHO → 1° alcohol, RCHO → 2° alcohol, ketone → 3° alcohol. NaBH<sub>4</sub> or LiAlH<sub>4</sub> adds H<sup>−</sup>: aldehyde → 1° alcohol, ketone → 2° alcohol (butanone + NaBH<sub>4</sub> → 2-butanol).</p>
+    <h4>4 · α,β-Unsaturated aldehydes and ketones</h4>
+<pre class="mech">C=C–C=O + Nu–H ──▶ C=C–C(OH)Nu      direct (1,2) addition
+                ──▶ Nu–C–CH–C=O      conjugate (1,4) addition</pre>
+    <p><b>Direct addition</b> with strongly basic nucleophiles: RLi, RMgX, LiAlH<sub>4</sub>. <b>Conjugate addition</b> with weakly basic ones: CN<sup>−</sup>, amines, RSH, X<sup>−</sup>.</p>
+  </div>
+  <div class="block">
+    <h3>B. Addition followed by elimination</h3>
+    <h4>1 · Alcohols: hemiacetals and acetals</h4>
+<pre class="mech">aldehyde + R′OH ⇌ hemiacetal ──+R′OH, H⁺, −H₂O──▶ acetal
+ketone   + R′OH ⇌ hemiketal  ──+R′OH, H⁺, −H₂O──▶ ketal</pre>
+    <p>Acid catalysis: protonate C=O, add one ROH (hemiacetal), protonate –OH and lose water (giving a resonance-stabilized cation), add the second ROH (acetal). Base can catalyze only the hemiacetal step, because –OH is a poor leaving group. Open-chain hemiacetals are usually unfavorable (K<sub>eq</sub> &lt; 1), but cyclic ones are important: glucose is a cyclic hemiacetal and fructose a cyclic hemiketal.</p>
+    <h4>2 · Aldol condensation</h4>
+<pre class="mech">2 CH₃CHO ──10% NaOH──▶ CH₃CH(OH)CH₂CHO   3-hydroxybutanal (an aldol)
+
+1. OH⁻ removes an α-H ──▶ enolate ion (the nucleophile)
+2. enolate adds to the C=O of a second molecule ──▶ alkoxide
+3. alkoxide takes H⁺ from water ──▶ aldol, OH⁻ regenerated</pre>
+    <p>The aldehyde must have an <b>α-H</b>. Two different aldehydes give a <b>crossed aldol</b>. Ketones (e.g. acetone) give aldols too, but the equilibrium is unfavorable. The aldol links two small molecules with a new C–C bond.</p>
+    <h4>3 · Cannizzaro reaction</h4>
+    <p>An aldehyde with <b>no α-H</b>, heated with concentrated base (50% KOH), disproportionates: half is oxidized to the carboxylate, half reduced to the alcohol. 2 HCHO → HCOO<sup>−</sup> + CH<sub>3</sub>OH. 2 C<sub>6</sub>H<sub>5</sub>CHO → C<sub>6</sub>H<sub>5</sub>COO<sup>−</sup> + C<sub>6</sub>H<sub>5</sub>CH<sub>2</sub>OH. Mechanism: OH<sup>−</sup> adds to C=O, then the adduct transfers a hydride to a second aldehyde.</p>
+    <h4>4 · α-Halogenation</h4>
+    <p>Ketones are halogenated at the α-carbon in base (via the enolate; enolate formation is slow) or in acid (via the enol; enol formation is the slow step).</p>
+    <h4>5 · Haloform (iodoform) test</h4>
+<pre class="mech">R–CO–CH₃ + 3 I₂ + 4 OH⁻ ──▶ R–COO⁻ + CHI₃↓ (yellow solid) + 3 I⁻ + 3 H₂O</pre>
+    <p>Positive for <b>methyl ketones</b>, acetaldehyde, and alcohols that oxidize to them (R–CH(OH)–CH<sub>3</sub>, ethanol). The CH<sub>3</sub> is triply iodinated, then CI<sub>3</sub><sup>−</sup> is pushed out.</p>
+    <h4>6 · Derivatives of ammonia (H<sub>2</sub>N–Z)</h4>
+<pre class="mech">C=O + H₂N–Z ──▶ C=N–Z + H₂O     (add, then eliminate water; faster in mild acid)</pre>
+    <div class="tbl"><table>
+      <thead><tr><th>Reagent H<sub>2</sub>N–Z</th><th>Product</th></tr></thead>
+      <tbody>
+        <tr><td>hydroxylamine, H<sub>2</sub>N–OH</td><td>oxime</td></tr>
+        <tr><td>hydrazine, H<sub>2</sub>N–NH<sub>2</sub></td><td>hydrazone</td></tr>
+        <tr><td>phenylhydrazine, H<sub>2</sub>N–NHC<sub>6</sub>H<sub>5</sub></td><td>phenylhydrazone</td></tr>
+        <tr><td>2,4-dinitrophenylhydrazine (2,4-DNPH)</td><td>2,4-dinitrophenylhydrazone (yellow-orange-red precipitate)</td></tr>
+        <tr><td>semicarbazide, H<sub>2</sub>N–NH–CO–NH<sub>2</sub></td><td>semicarbazone</td></tr>
+      </tbody>
+    </table></div>
+    <p>These products are insoluble solids with sharp melting points, so they are used to identify unknown aldehydes and ketones.</p>
+    <h4>Application: amino acid synthesis</h4>
+    <p><b>Strecker synthesis:</b> aldehyde + NH<sub>3</sub> + HCN → α-aminonitrile; hydrolysis → amino acid. Acetaldehyde gives alanine (60%). Alternatively, an α-halo acid + excess NH<sub>3</sub> gives the amino acid.</p>
+  </div>
+    <div class="edge">
+    <span class="lbl">Klein extras · Ch. 20 &amp; 22</span>
+    <h3>Patterns that make the reactions predictable</h3>
+    <ul>
+      <li><b>Strong vs weak nucleophile rule:</b> H⁻ (LiAlH₄, NaBH₄) and C⁻ (RMgX) add <b>irreversibly</b> in basic conditions. Weak ones (H₂O, ROH, amines) add <b>reversibly</b> and need acid. <span class="ref">20.4, pp. 937–938</span></li>
+      <li><b>Acetals as protecting groups:</b> acetals survive bases, Grignards and hydrides, and come off with aqueous acid. Use one to hide a ketone while you react something else. <span class="ref">pp. 945–946</span></li>
+      <li><b>1° amine → imine; 2° amine → enamine.</b> Imine formation is fastest in mildly acidic solution (around pH 4–5). <span class="ref">pp. 947–955</span></li>
+      <li><b>Wolff–Kishner</b> (H₂NNH₂, KOH, heat) turns C=O into CH₂ through a hydrazone, the basic partner of the Clemmensen reduction. <span class="ref">p. 951</span></li>
+      <li><b>Cannizzaro</b> is a hydride-transfer reaction; Klein files it under hydrogen nucleophiles. <span class="ref">p. 961</span></li>
+      <li><b>Grignard limits:</b> no –OH, –NH, –COOH or water anywhere in the molecule, because the Grignard grabs the proton first. <span class="ref">pp. 597–598</span></li>
+      <li><b>Aldol condensation:</b> heating the aldol loses water and gives a conjugated α,β-unsaturated carbonyl. <span class="ref">p. 1059</span></li>
+      <li><b>Haloform</b> works because CX₃⁻ is stabilized enough to leave. <span class="ref">pp. 1055–1056</span></li>
+    </ul>
+  </div>
+  <div class="quiz" data-quiz="an"></div>
+</section>
+
+<!-- ============ SNAc ============ -->
+<section class="view" id="v-snac" hidden>
+  <div class="lesson-head">
+    <span class="tag">Week 13 · Nucleophilic acyl substitution · guide pp. 168–173</span>
+    <h2>Nucleophilic acyl substitution</h2>
+    <p>The carboxylic acid family, R–CO–L with L = –Cl, –OCOR, –OR, –OH, –NH<sub>2</sub>, has a carbonyl carbon bonded to two electronegative atoms. Unlike aldehydes and ketones, these compounds have a leaving group, so the tetrahedral adduct collapses and expels L.</p>
+    <div class="vids"><span class="vid" data-vid="ns1"></span><span class="vid" data-vid="ns2"></span><span class="vid" data-vid="ns3"></span></div>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li>R–CO–L: the nucleophile adds, then L leaves (<b>addition–elimination</b>) through a tetrahedral intermediate.</li>
+      <li>Reactivity follows leaving-group ability: <b>acid chloride &gt; anhydride &gt; ester &gt; acid &gt; amide</b>.</li>
+      <li>You can only go "downhill": a more reactive derivative makes a less reactive one.</li>
+      <li>Acid-catalyzed steps protonate C=O first; base steps attack first.</li>
+      <li><b>Saponification</b> goes to completion because the carboxylate can't react back.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Addition, then elimination</h3>
+<pre class="mech">R–CO–L + Nu⁻ ──addition──▶ R–C(O⁻)(L)(Nu) ──elimination──▶ R–CO–Nu + L⁻
+                        tetrahedral intermediate</pre>
+    <p>Aldehydes and ketones stop at addition because –H and –R are extremely strong bases and very poor leaving groups.</p>
+  </div>
+  <div class="block">
+    <h3>Leaving-group ability sets reactivity</h3>
+<pre class="mech">Leaving ability:  Cl⁻ > RCOO⁻ > RO⁻ > OH⁻ > NH₂⁻
+
+Reactivity:  acid chloride > anhydride > ester > carboxylic acid > amide</pre>
+    <p>Good leaving groups (Cl<sup>−</sup>, RCOO<sup>−</sup>) leave directly. –OR and –OH become good leaving groups when protonated (acid conditions). –NH<sub>2</sub> is not normally a leaving group, which is why amides are least reactive.</p>
+    <div class="two">
+      <div><h4>Reactive derivatives (acid chlorides)</h4>
+<pre class="mech">1. Nu⁻ attacks C=O
+2. Cl⁻ leaves, C=O re-forms</pre></div>
+      <div><h4>Less reactive ones (acid catalysis)</h4>
+<pre class="mech">1. protonate carbonyl O
+2. Nu attacks the activated C
+3. proton transfer
+4. L leaves as a neutral molecule
+5. lose H⁺ ──▶ product</pre></div>
+    </div>
+  </div>
+  <div class="block">
+    <h3>Interconversions</h3>
+    <p>A more reactive derivative can easily be turned into a less reactive one (downhill), not the reverse.</p>
+<pre class="mech">CH₃COOH + SOCl₂ ──▶ CH₃COCl + SO₂ + HCl                       (acid → acid chloride)
+CH₃COCl + CH₃OH ──▶ CH₃COOCH₃ + HCl                           (esterification)
+CH₃COOCH₂CH₃ + CH₃OH ──H⁺──▶ CH₃COOCH₃ + CH₃CH₂OH            (transesterification)
+CH₃CH₂COOCH₃ + H₂O ──H⁺──▶ CH₃CH₂COOH + CH₃OH               (acid hydrolysis)
+CH₃CH₂COOCH₃ + NaOH ──▶ CH₃CH₂COO⁻Na⁺ + CH₃OH               (saponification)
+2 CH₃COOH ──AlPO₄, heat──▶ (CH₃CO)₂O + H₂O                    (acetic anhydride)
+succinic acid ──heat──▶ succinic anhydride + H₂O
+RCOCl + 2 NH₃ ──▶ RCONH₂ + NH₄Cl                              (amide)</pre>
+    <p>Saponification goes to completion because the acid formed is a stronger acid than the alcohol, so it is deprotonated to the carboxylate and cannot react back.</p>
+  </div>
+  <div class="block">
+    <h3>Nitrile hydrolysis and α-halogenation</h3>
+    <ul>
+      <li><b>Nitriles:</b> R–C≡N + H<sub>2</sub>O (H<sup>+</sup> or OH<sup>−</sup>) → amide → R–COOH (+ NH<sub>4</sub><sup>+</sup> or NH<sub>3</sub>).</li>
+      <li><b>Acid halides</b> can be halogenated at the α-C with X<sub>2</sub> and H<sup>+</sup> or OH<sup>−</sup>, through the enol, just like ketones: CH<sub>3</sub>COCl + Cl<sub>2</sub> → ClCH<sub>2</sub>COCl.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>How fast does a base or nucleophile react with each site?</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Reaction</th><th>Initial rate</th><th>Steric hindrance</th><th class="num">Atoms on site</th><th>Side reactions</th></tr></thead>
+      <tbody>
+        <tr><td>Y: + H–Z (proton transfer)</td><td>fast</td><td>low</td><td class="num">1</td><td>none</td></tr>
+        <tr><td>Y: + C=O (addition)</td><td>medium</td><td>medium</td><td class="num">3</td><td>enolization</td></tr>
+        <tr><td>Y: + C–L (S<sub>N</sub>1/S<sub>N</sub>2)</td><td>slow</td><td>high</td><td class="num">4</td><td>elimination</td></tr>
+      </tbody>
+    </table></div>
+    <div class="key"><b>Exercise IV.9:</b> An ester with a –CN group conjugated to the acyl carbon is most reactive, because the strong electron-withdrawing group makes the acyl carbon more electrophilic. LiAlH<sub>4</sub> reduction of methyl ethanoate gives methanol and ethanol. Amides reduced by LiAlH<sub>4</sub> give amines.</div>
+  </div>
+    <div class="edge">
+    <span class="lbl">Klein extras · Ch. 21</span>
+    <h3>The reagent table to know cold</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Derivative</th><th>+ H₂O / H₃O⁺ or OH⁻</th><th>+ R′OH</th><th>+ NH₃ / RNH₂</th><th>+ LiAlH₄</th><th>+ 2 R′MgX</th></tr></thead>
+      <tbody>
+        <tr><td>Acid chloride</td><td>acid</td><td>ester</td><td>amide</td><td>1° alcohol</td><td>3° alcohol</td></tr>
+        <tr><td>Anhydride</td><td>acid</td><td>ester + acid</td><td>amide + carboxylate</td><td>1° alcohol</td><td>3° alcohol</td></tr>
+        <tr><td>Ester</td><td>acid (H⁺) or carboxylate (OH⁻)</td><td>new ester (transesterification)</td><td>amide (slow)</td><td>two alcohols</td><td>3° alcohol</td></tr>
+        <tr><td>Amide</td><td>acid, only with strong acid or base and heat</td><td>no reaction</td><td>no reaction</td><td><b>amine</b></td><td>not used</td></tr>
+        <tr><td>Nitrile</td><td>amide → acid</td><td>–</td><td>–</td><td>1° amine</td><td>ketone (1 equiv)</td></tr>
+      </tbody>
+    </table></div>
+    <ul>
+      <li><b>Fischer esterification</b> (RCOOH + R′OH, H⁺) is an equilibrium; push it with excess alcohol or by removing water. <span class="ref">p. 1014</span></li>
+      <li><b>Stopping at the aldehyde:</b> DIBAH at −78 °C reduces an ester only to the aldehyde. <span class="ref">p. 1019</span></li>
+      <li><b>Stopping at the ketone:</b> acid chloride + R₂CuLi (Gilman reagent) gives a ketone; a Grignard would keep going to the 3° alcohol. <span class="ref">p. 1009</span></li>
+      <li><b>Why two Grignards add to an ester:</b> the first addition makes a ketone, which is more reactive than the ester, so it gets attacked again. <span class="ref">pp. 1017–1018</span></li>
+      <li><b>Carboxylate is the bottom of the ladder.</b> In base, a carboxylic acid is deprotonated and won't react with nucleophiles at all. <span class="ref">pp. 997–999</span></li>
+    </ul>
+  </div>
+  <div class="quiz" data-quiz="snac"></div>
+</section>
+
+<!-- ============ SNAr ============ -->
+<section class="view" id="v-snar" hidden>
+  <div class="lesson-head">
+    <span class="tag">Week 13 · Nucleophilic aromatic substitution · guide pp. 117–121</span>
+    <h2>Nucleophilic aromatic substitution</h2>
+    <p>The flip side of EAS: here a nucleophile attacks the ring. Aryl halides (Ar–X) barely react under conditions where alkyl halides react easily; chlorobenzene refluxed with NaOH gives no substitution.</p>
+    <div class="vids"><span class="vid" data-vid="ar1"></span><span class="vid" data-vid="ar2"></span></div>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li>Why Ar–X resists S<sub>N</sub>1/S<sub>N</sub>2: no backside attack, unstable phenyl cation, stronger C–X bond.</li>
+      <li><b>Addition–elimination:</b> needs EWGs (–NO₂) <b>ortho or para</b> to X; goes through the Meisenheimer carbanion. More EWGs, milder conditions.</li>
+      <li><b>Elimination–addition:</b> no EWG, very strong base (NaNH₂/KNH₂) → <b>benzyne</b>; can give more than one product.</li>
+      <li><b>Diazonium salts</b> (ArNH₂ + NaNO₂/HCl, 0–5 °C) are replaced by Cl, Br, CN (Sandmeyer), F, I, OH, H; they also couple with activated rings to give azo dyes.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>Why aryl halides resist S<sub>N</sub>1 and S<sub>N</sub>2</h3>
+    <ol>
+      <li>The ring blocks <b>backside attack</b>, so S<sub>N</sub>2 cannot happen.</li>
+      <li><b>Phenyl cations are very unstable</b>, so S<sub>N</sub>1 does not happen.</li>
+      <li>The C–X bond is shorter and stronger, with partial double-bond character from π delocalization. Breaking it needs more energy either way.</li>
+    </ol>
+    <p>Under the right conditions it does work, and electron-withdrawing groups make it much easier:</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Aryl chloride + OH<sup>−</sup></th><th>Conditions needed</th></tr></thead>
+      <tbody>
+        <tr><td>chlorobenzene</td><td>NaOH, 350 °C, high pressure, then H<sup>+</sup></td></tr>
+        <tr><td>p-nitrochlorobenzene</td><td>aq. NaHCO<sub>3</sub>, 130 °C</td></tr>
+        <tr><td>2,4-dinitrochlorobenzene</td><td>aq. NaHCO<sub>3</sub>, 100 °C</td></tr>
+        <tr><td>2,4,6-trinitrochlorobenzene</td><td>aq. NaHCO<sub>3</sub>, 35 °C</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="block">
+    <h3>A. Addition–elimination (activated aryl halides)</h3>
+    <p>Applies when a strongly electron-withdrawing group is <b>ortho or para</b> to –X. The more such groups, the faster the reaction and the milder the conditions.</p>
+<pre class="mech">Ar(NO₂)–Cl + OH⁻ ──addition (slow)──▶ [Meisenheimer complex]⁻ ──elimination (fast)──▶ Ar(NO₂)–OH + Cl⁻
+                                       delocalized carbanion</pre>
+    <div class="key"><b>Key point:</b> the negative charge of the Meisenheimer complex sits on the carbons ortho and para to the attacked carbon. A nitro group there can take the charge onto its oxygens by resonance. A meta nitro group cannot, so it helps much less.</div>
+  </div>
+  <div class="block">
+    <h3>B. Elimination–addition (benzyne)</h3>
+    <p>Applies to <b>unactivated</b> aryl halides. It needs forcing conditions (high T and P) or a very strong base such as KNH<sub>2</sub> in liquid NH<sub>3</sub>.</p>
+<pre class="mech">C₆H₅Br + K⁺NH₂⁻ ──elimination (−HBr)──▶ benzyne ──addition of NH₃──▶ C₆H₅NH₂</pre>
+    <p>The "triple bond" of benzyne is not like an alkyne's. One of its bonds comes from sideways overlap of two sp<sup>2</sup> orbitals that lie in the plane of the ring, so it is weak and very reactive. The nucleophile can add to either end of the benzyne, so substituted aryl halides can give more than one product.</p>
+    <div class="key"><b>Exercise IV.5 #2:</b> m-bromoethylbenzene + NaNH<sub>2</sub> can form two different benzynes and gives <b>three</b> products (o-, m- and p-ethylaniline). The ortho isomer gives two (o- and m-), and the para isomer gives two (p- and m-).</div>
+  </div>
+  <div class="block">
+    <h3>C. Diazonium ions (aryl cation pathway)</h3>
+    <p>This route makes nucleophilic substitution on the ring easy. First the aromatic amine is converted to a diazonium salt (diazotization), kept cold:</p>
+<pre class="mech">NaNO₂ + HX ──▶ HNO₂ (HONO) + NaX
+HONO + H⁺ ──▶ H₂O–NO⁺ ──▶ H₂O + N≡O⁺  (nitrosonium)
+R–NH₂ + N≡O⁺ ──▶ R–NH₂⁺–N=O ──▶ R–NH–N=O (N-nitrosamine) ──▶ R–N=N–OH ──H⁺, −H₂O──▶ R–N≡N⁺
+
+Ar–NH₂ + NaNO₂ + HCl (0–5 °C) ──▶ Ar–N₂⁺ Cl⁻   benzenediazonium chloride</pre>
+    <p>N-Nitrosamines are very powerful carcinogens. Most aryl diazonium salts are unstable above 5–10 °C and can explode when dry.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Ar–N<sub>2</sub><sup>+</sup> treated with</th><th>Product</th><th>Name</th></tr></thead>
+      <tbody>
+        <tr><td>CuCl</td><td>Ar–Cl</td><td>Sandmeyer</td></tr>
+        <tr><td>CuBr</td><td>Ar–Br</td><td>Sandmeyer</td></tr>
+        <tr><td>CuCN</td><td>Ar–CN</td><td>Sandmeyer</td></tr>
+        <tr><td>HBF<sub>4</sub>, heat</td><td>Ar–F</td><td>Schiemann</td></tr>
+        <tr><td>KI</td><td>Ar–I</td><td></td></tr>
+        <tr><td>H<sub>2</sub>O, heat</td><td>Ar–OH</td><td></td></tr>
+        <tr><td>CH<sub>3</sub>OH (or H<sub>3</sub>PO<sub>2</sub>)</td><td>Ar–H</td><td>removes the N<sub>2</sub> group</td></tr>
+      </tbody>
+    </table></div>
+    <h4>Azo coupling (the diazonium ion as an electrophile)</h4>
+<pre class="mech">Ar–N≡N⁺  +  H–C₆H₄–G  ──▶  Ar–N=N–C₆H₄–G  (azo compound, a dye)
+                 G = –NR₂ or –OH (strong activator)</pre>
+    <p>The diazonium ion is a weak electrophile, so the partner ring must be strongly activated. Examples: p-hydroxyazobenzene (orange dye) and p-(dimethylamino)azobenzene (yellow dye).</p>
+  </div>
+  
+  <div class="edge">
+    <span class="lbl">Klein extras · Ch. 19 &amp; 23</span>
+    <h3>Which aromatic substitution mechanism is it?</h3>
+    <div class="tree" role="group" aria-label="Decision tree for aromatic substitution mechanisms">
+      <div class="n q">Is the reagent an electrophile or a nucleophile?</div>
+      <div class="row">
+        <div class="br"><span class="yn">electrophile (Br₂/FeBr₃, HNO₃/H₂SO₄, RCl/AlCl₃…)</span><div class="n r">EAS · sigma complex (+)</div></div>
+        <div class="br"><span class="yn">nucleophile (OH⁻, NH₂⁻, OCH₃⁻…)</span>
+          <div class="n q">All three true? ① strong EWG on ring ② a leaving group ③ EWG ortho or para to it</div>
+          <div class="row">
+            <div class="br"><span class="yn">yes</span><div class="n r">S<sub>N</sub>Ar · Meisenheimer complex (−)</div></div>
+            <div class="br"><span class="yn">no</span><div class="n r">Elimination–addition · benzyne<br><span style="font-weight:400;font-size:13px">needs NaNH₂ or 350 °C</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:13px">Redrawn from the logic of <span class="ref">Klein Figs. 19.15–19.16, p. 918</span></p>
+    <ul>
+      <li><b>Meta nitro = no reaction.</b> p-Bromonitrobenzene + NaOH at 70 °C gives the phenol; the meta isomer does nothing. Klein calls the nitro group a "temporary reservoir" for the incoming electrons. <span class="ref">pp. 914–915</span></li>
+      <li><b>Don't forget H₃O⁺.</b> With OH⁻ as the nucleophile, the product is first a phenoxide ion, so an acid workup is needed to get the phenol. <span class="ref">p. 915</span></li>
+      <li><b>Proof that benzyne exists:</b> a ¹⁴C label ends up split about 50 : 50 between the two possible carbons, and adding furan traps benzyne as a Diels–Alder adduct. Its "triple bond" is a weak sideways overlap of sp² orbitals, more like a diradical. <span class="ref">pp. 916–917</span></li>
+      <li><b>History bit:</b> the 350 °C NaOH route to phenol was found at Dow Chemical in 1928. <span class="ref">p. 916</span></li>
+      <li><b>Nitrosonium ion:</b> NaNO₂ + HCl → HNO₂ → NO⁺, the real electrophile in diazotization. Primary aryl amines give diazonium salts; secondary amines give <b>N-nitrosamines</b> (carcinogens found in cured meats, fried bacon, tobacco smoke). <span class="ref">Mech. 23.2–23.3, p. 1129</span></li>
+      <li><b>Diazonium toolkit:</b> CuCl, CuBr, CuCN (Sandmeyer); HBF₄ → F (Schiemann); H₂O, heat → OH; H₃PO₂ → H. ArCN can then be hydrolyzed to ArCOOH. <span class="ref">pp. 1131–1132</span></li>
+      <li><b>The "use and remove" trick:</b> to make 1,3,5-tribromobenzene, brominate aniline (–NH₂ sends Br to both ortho positions and para), then convert –NH₂ to N₂⁺ and replace it with H using H₃PO₂. <span class="ref">p. 1132</span></li>
+    </ul>
+  </div>
+  <div class="quiz" data-quiz="snar"></div>
+</section>
+
+<!-- ============ REDOX ============ -->
+<section class="view" id="v-redox" hidden>
+  <div class="lesson-head">
+    <span class="tag">Redox reagents · Lab Activity 10 · guide pp. 174–181</span>
+    <h2>Oxidation and reduction</h2>
+    <p>Redox reactions show up three ways in this chapter: in qualitative tests, in synthesis, and in working out structures.</p>
+  </div>
+  <div class="block">
+    <h3>Must know</h3>
+    <ul>
+      <li><b>Oxidation</b> = more bonds to O (or fewer to H); <b>reduction</b> = more bonds to H.</li>
+      <li>1° alcohol → aldehyde → acid; 2° → ketone; 3° → no reaction.</li>
+      <li>NaBH₄ reduces only aldehydes and ketones; <b>LiAlH₄</b> also reduces esters, acids, amides and nitriles. Neither touches C=C.</li>
+      <li>Tests: Tollens' (all aldehydes), Benedict's/Fehling's (aliphatic aldehydes), chromic acid (1°/2° alcohols, aldehydes), Baeyer's (C=C).</li>
+      <li><b>Ozonolysis</b> splits C=C into two C=O, which lets you work backward to the alkene.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>A. Qualitative tests</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Test</th><th>Positive for</th><th>What you see</th></tr></thead>
+      <tbody>
+        <tr><td><b>Baeyer's</b> (cold, dilute KMnO<sub>4</sub>)</td><td>alkenes, alkynes</td><td>purple → brown MnO<sub>2</sub> precipitate. Alkenes become diols; terminal alkynes are cleaved (RC≡CH → RCOOH + CO<sub>2</sub>).</td></tr>
+        <tr><td><b>Chromic acid</b> (Cr<sub>2</sub>O<sub>7</sub><sup>2−</sup>)</td><td>1° and 2° alcohols, aldehydes</td><td>orange → green (Cr<sup>3+</sup>). 3° alcohols: negative.</td></tr>
+        <tr><td><b>Tollens'</b> (Ag(NH<sub>3</sub>)<sub>2</sub><sup>+</sup>)</td><td>all aldehydes (aliphatic and aromatic)</td><td>silver mirror</td></tr>
+        <tr><td><b>Benedict's / Fehling's</b> (Cu<sup>2+</sup> complex)</td><td>aliphatic aldehydes only</td><td>brick-red Cu<sub>2</sub>O precipitate</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="block">
+    <h3>B. In synthesis: oxidation</h3>
+    <ul>
+      <li>The same oxidations as the tests: 1° alcohol → aldehyde → acid; 2° alcohol → ketone.</li>
+      <li>Toluene (any alkylbenzene) + hot KMnO<sub>4</sub> → benzoic acid.</li>
+    </ul>
+  </div>
+  <div class="block">
+    <h3>B. In synthesis: reduction</h3>
+    <h4>Catalytic hydrogenation and its relatives</h4>
+<pre class="mech">CH₃CH=CH₂ + H₂ ──Pt, Pd or Ni──▶ CH₃CH₂CH₃
+CH₃C≡CCH₃ + H₂ ──Lindlar's catalyst──▶ cis-2-butene
+CH₃C≡CCH₃ ──Na or Li, liq. NH₃──▶ trans-2-butene
+CH₃C≡CCH₃ + LiAlH₄ ──▶ no reaction
+CH₃CH₂CHO ──LiAlH₄ then H⁺/H₂O, or NaBH₄ then H₂O, or H₂/Raney Ni──▶ CH₃CH₂CH₂OH
+CH₃CH=NCH₃ + H₂ ──Pt──▶ CH₃CH₂NHCH₃        (imine → amine)
+CH₃CH₂C≡N + 2 H₂ ──Pt──▶ CH₃CH₂CH₂NH₂      (nitrile → 1° amine)</pre>
+    <p>Aldehydes and ketones are reduced by H<sub>2</sub>/catalyst, NaBH<sub>4</sub> or LiAlH<sub>4</sub>, to 1° and 2° alcohols respectively.</p>
+    <h4>Carboxylic acid derivatives</h4>
+    <ul>
+      <li>Not reactive enough for catalytic hydrogenation or NaBH<sub>4</sub>. Only <b>LiAlH<sub>4</sub></b> (a strong hydride source) reduces them: acids and esters → 1° alcohols; amides → amines (R–CONHCH<sub>3</sub> → R–CH<sub>2</sub>NHCH<sub>3</sub>).</li>
+      <li>Acid chlorides, the most reactive, can be hydrogenated (H<sub>2</sub>, Pd/C) to the aldehyde and on to the 1° alcohol.</li>
+      <li><b>Rosenmund reduction:</b> H<sub>2</sub> with a deactivated (poisoned) Pd catalyst stops at the aldehyde: CH<sub>3</sub>CH<sub>2</sub>COCl → CH<sub>3</sub>CH<sub>2</sub>CHO.</li>
+    </ul>
+    <h4>Carbonyl to CH<sub>2</sub></h4>
+<pre class="mech">R–CO–R′ ──Zn(Hg), HCl──▶ R–CH₂–R′          Clemmensen (acidic)
+R–CO–R′ ──H₂NNH₂, OH⁻, heat──▶ R–CH₂–R′    Wolff–Kishner (basic)</pre>
+    <h4>Nitro to amine</h4>
+<pre class="mech">C₆H₅NO₂ ──Sn/HCl──▶ C₆H₅NH₃⁺ ──OH⁻──▶ C₆H₅NH₂ (aniline)</pre>
+    <p>C=C and C≡C carry no partial positive charge, so hydride reagents (NaBH<sub>4</sub>, LiAlH<sub>4</sub>) do not reduce them.</p>
+<pre class="mech">Ease of reduction by hydride (most → least):
+acyl chloride > aldehyde > ketone > imine > ester > carboxylic acid > amide > nitrile
+(alkenes and alkynes: not reduced by hydride)</pre>
+  </div>
+  <div class="block">
+    <h3>C. In structure determination</h3>
+    <h4>Ozonolysis (O<sub>3</sub>, then Zn/H<sub>2</sub>O)</h4>
+    <p>Cuts each C=C in two and puts =O on both carbons. Doubly bonded C with an H becomes an aldehyde; with two R groups it becomes a ketone; terminal =CH<sub>2</sub> becomes formaldehyde.</p>
+<pre class="mech">CH₃CH₂CH=CH₂ ──1) O₃ 2) Zn, H₂O──▶ CH₃CH₂CHO + HCHO
+(CH₃)₂C=CHCH₃ ──1) O₃ 2) Zn, H₂O──▶ CH₃COCH₃ + CH₃CHO</pre>
+    <p>With two or more C=C, you get three or more fragments, and the middle one is oxidized at both ends. A ring alkene gives a single chain with C=O at both ends. Alkynes give carboxylic acids.</p>
+    <div class="key"><b>Working backward:</b> C<sub>4</sub>H<sub>8</sub> that gives only CH<sub>3</sub>CHO must be CH<sub>3</sub>CH=CHCH<sub>3</sub> (join the two C=O carbons with a double bond). C<sub>6</sub>H<sub>10</sub> that gives one fragment, OHC–CH<sub>2</sub>CH<sub>2</sub>CH<sub>2</sub>CH<sub>2</sub>–CHO, is cyclohexene.</div>
+    <h4>Hot, concentrated KMnO<sub>4</sub></h4>
+    <p>Mild conditions (cold, dilute) give diols. Forcing conditions cleave the C=C: =CH<sub>2</sub> → CO<sub>2</sub>; =CHR → RCOOH; =CR<sub>2</sub> → ketone. It often gives mixtures, so ozonolysis is preferred for structure work.</p>
+    <h4>Periodic acid (HIO<sub>4</sub>)</h4>
+    <p>Cleaves vicinal diols (1,2-diols) into two carbonyl compounds: CH<sub>3</sub>CH(OH)–CH(OH)CH<sub>3</sub> → 2 CH<sub>3</sub>CHO.</p>
+    <div class="key"><b>Exercise IV.10 (limonene):</b> C<sub>10</sub>H<sub>16</sub> takes up two equivalents of H<sub>2</sub>, so it has two C=C (and with three degrees of unsaturation, one ring). Ozonolysis then Zn/acid gives one equivalent of formaldehyde (a terminal =CH<sub>2</sub>) plus one other carbonyl fragment.</div>
+  </div>
+    <div class="edge">
+    <span class="lbl">Klein extras · Ch. 9, 13, 20</span>
+    <h3>Reading oxidation levels and picking the right reagent</h3>
+    <figure class="dg"><div class="sv"><svg viewBox="0 0 560 120" role="img" aria-label="Oxidation ladder for one carbon: alkane, alcohol, aldehyde or ketone, carboxylic acid, carbon dioxide">
+      <line class="ln" x1="20" y1="60" x2="540" y2="60"/>
+      <circle class="ba" cx="40" cy="60" r="8"/><circle class="ba" cx="150" cy="60" r="8"/><circle class="ba" cx="270" cy="60" r="8"/><circle class="ba" cx="400" cy="60" r="8"/><circle class="ba" cx="520" cy="60" r="8"/>
+      <text x="22" y="40">R–CH₃</text><text x="125" y="40">R–CH₂OH</text><text x="235" y="40">R–CHO, R₂CO</text><text x="372" y="40">R–COOH</text><text x="505" y="40">CO₂</text>
+      <text class="m" x="20" y="88">0 bonds to O</text><text class="m" x="130" y="88">1</text><text class="m" x="265" y="88">2</text><text class="m" x="395" y="88">3</text><text class="m" x="515" y="88">4</text>
+      <text class="p" x="20" y="112">oxidation →</text><text class="a" x="430" y="112">← reduction</text>
+    </svg></div><figcaption>Count the bonds from carbon to O (or N, halogen). Going right is oxidation, going left is reduction. <span class="ref">Klein 13.4, pp. 587–589</span></figcaption></figure>
+    <ul>
+      <li><b>Chromic acid vs PCC:</b> chromic acid takes a 1° alcohol all the way to the acid; PCC (in CH₂Cl₂) stops at the aldehyde. Both turn 2° alcohols into ketones. <span class="ref">p. 611</span></li>
+      <li><b>Breathalyzer:</b> the orange → green dichromate color change from oxidizing ethanol is the same chemistry as your chromic acid test. <span class="ref">p. 610</span></li>
+      <li><b>LiAlH₄ vs NaBH₄:</b> LiAlH₄ reacts violently with water, so it's used in dry ether and water is added in a separate second step. NaBH₄ can be used in methanol or water. <span class="ref">pp. 590–592</span></li>
+      <li><b>Dihydroxylation stereo:</b> cold KMnO₄ or OsO₄ adds both OH on the same face (syn); epoxide then H₃O⁺ gives anti. <span class="ref">9.9–9.10, pp. 440–444</span></li>
+      <li><b>Tollens' and Benedict's</b> appear in Klein under carbohydrates: a positive test marks a <b>reducing sugar</b>. <span class="ref">p. 1170</span></li>
+    </ul>
+  </div>
+  <div class="quiz" data-quiz="redox"></div>
+</section>
+
+
+</main>
+</div>
+
+<script>
+(function(){
+"use strict";
+var TOPICS=[
+ {id:"start",code:"Start here",name:"The four factors",desc:"Reagent, substrate, leaving group, solvent: how to pick S_N1, S_N2, E1 or E2."},
+ {id:"sn",code:"Week 12",name:"Substitution at saturated carbon",desc:"S_N1 vs S_N2: rate laws, stereochemistry, nucleophiles, leaving groups, solvents."},
+ {id:"elim",code:"Week 12",name:"Elimination",desc:"E1 vs E2, elimination vs substitution, Zaitsev vs Hofmann, anti-periplanar."},
+ {id:"other",code:"Week 12",name:"Other substrates",desc:"Alcohols (HX, Lucas, SOCl₂, PBr₃, dehydration), ethers, epoxides, Hofmann elimination."},
+ {id:"an",code:"Week 13",name:"Nucleophilic addition to C=O",desc:"Cyanohydrins, acetals, imines, aldol, Cannizzaro, iodoform, Grignard."},
+ {id:"snac",code:"Week 13",name:"Nucleophilic acyl substitution",desc:"Reactivity ladder, interconversions, esterification, saponification."},
+ {id:"snar",code:"Week 13",name:"Nucleophilic aromatic substitution",desc:"Meisenheimer complex, benzyne, diazonium salts."},
+ {id:"redox",code:"Lab 10",name:"Redox reagents",desc:"Oxidizing and reducing agents, qualitative tests, ozonolysis."}
+];
+var VIDEOS=[
+ {k:"sn1",w:12,t:"Nucleophilic Substitution at Saturated Carbons (Part 1)",id:"Sss94yTEvnk",v:"sn"},
+ {k:"sn2",w:12,t:"Nucleophilic Substitution at Saturated Carbons (Part 2)",id:"rk_3oSt06Kw",v:"sn"},
+ {k:"sn3",w:12,t:"Nucleophilic Substitution at Saturated Carbons (Part 3)",id:"KUYO538A0qY",v:"sn"},
+ {k:"sn4",w:12,t:"Nucleophilic Substitution at Saturated Carbons (Part 4)",id:"NaHnMv1ydPQ",v:"sn"},
+ {k:"e1",w:12,t:"Elimination Reactions (Part 1)",id:"wecQMHmE-eA",v:"elim"},
+ {k:"e2",w:12,t:"Elimination Reactions (Part 2)",id:"ViEXFzgnVnQ",v:"elim"},
+ {k:"e3",w:12,t:"Elimination Reactions (Part 3)",id:"OjfkdTA8fRM",v:"elim"},
+ {k:"os1",w:12,t:"Substitution and Elimination of Other Substrates (Part 1)",id:"XJlSTZw_uKo",v:"other"},
+ {k:"os2",w:12,t:"Substitution and Elimination of Other Substrates (Part 2)",id:"p63VygDR7wU",v:"other"},
+ {k:"os3",w:12,t:"Substitution and Elimination of Other Substrates (Part 3)",id:"6Ofy-j5rh9M",v:"other"},
+ {k:"os4",w:12,t:"Substitution and Elimination of Other Substrates (Part 4)",id:"gAWoKcVBJV4",v:"other"},
+ {k:"na1",w:13,t:"Nucleophilic Acyl Addition (Part 1)",id:"LGUx_i3FzV8",v:"an"},
+ {k:"na2",w:13,t:"Nucleophilic Acyl Addition (Part 2)",id:"gHTxkjOY--Q",v:"an"},
+ {k:"na3",w:13,t:"Nucleophilic Acyl Addition (Part 3)",id:"p1xSEjSOlyg",v:"an"},
+ {k:"na4",w:13,t:"Nucleophilic Acyl Addition (Part 4)",id:"ezENixr0-40",v:"an"},
+ {k:"ns1",w:13,t:"Nucleophilic Acyl Substitution (Part 1)",id:"XdkMsrSlGhs",v:"snac"},
+ {k:"ns2",w:13,t:"Nucleophilic Acyl Substitution (Part 2)",id:"I8GJGDbNdoI",v:"snac"},
+ {k:"ns3",w:13,t:"Nucleophilic Acyl Substitution (Part 3)",id:"Ftxk_EB5HeQ",v:"snac"},
+ {k:"ar1",w:13,t:"Nucleophilic Aromatic Substitution (Part 1)",id:"b2pRb1jh6NM",v:"snar"},
+ {k:"ar2",w:13,t:"Nucleophilic Aromatic Substitution (Part 2)",id:"IiHlUqhzPGQ",v:"snar"}
+];
+
+var QUIZ={
+start:[
+ {q:"Which reagent is a strong nucleophile but a weak base?",o:["NaH","NaOEt","NaI","t-BuOK"],a:2,e:"I⁻ is large and polarizable (good nucleophile) and the conjugate base of a strong acid (weak base)."},
+ {q:"Why is NaH used as a base and not as a nucleophile?",o:["H⁻ is a weak base","H⁻ is too small and unpolarizable to attack carbon well","It is neutral","It is a leaving group"],a:1,e:"Nucleophilicity needs polarizability; H⁻ has very little, but its conjugate acid H₂ is extremely weak, so it is a very strong base."},
+ {q:"2-Bromobutane + NaOEt in ethanol. Major mechanism?",o:["S_N1","S_N2","E1","E2"],a:3,e:"Secondary + strong base/strong nucleophile: E2 major, S_N2 minor."},
+ {q:"1-Bromobutane + NaOEt. Major mechanism?",o:["S_N1","S_N2","E1","E2"],a:1,e:"Primary + strong nucleophile/base: S_N2 major (E2 minor)."},
+ {q:"1-Bromobutane + t-BuOK. Major mechanism?",o:["S_N2","E2","S_N1","E1"],a:1,e:"The bulky base switches even a primary substrate to E2."},
+ {q:"tert-Butyl bromide in ethanol at room temperature mainly undergoes:",o:["S_N2","E2","S_N1","no reaction"],a:2,e:"Tertiary + weak nucleophile: S_N1 (solvolysis) with some E1."},
+ {q:"Best solvent to speed up an S_N2 reaction of CH₃I with NaN₃:",o:["water","methanol","DMSO","acetic acid"],a:2,e:"Polar aprotic solvents leave the anion unsolvated and reactive."},
+ {q:"tert-Butyl bromide + NaOH gives mainly:",o:["tert-butyl alcohol by S_N2","2-methylpropene by E2","a racemic mixture","no reaction"],a:1,e:"S_N2 is blocked at a 3° carbon; a strong base gives E2."}
+],
+sn:[
+ {q:"Neopentyl bromide, (CH₃)₃CCH₂Br, is primary, yet S_N2 is extremely slow. Why?",o:["It forms a stable carbocation","The bulky tert-butyl group next door blocks backside attack","Br⁻ is a poor leaving group","It has no β-H"],a:1,e:"Steric hindrance one carbon over still blocks the backside approach."},
+ {q:"Rate = k[R–L][Nu⁻]. Which mechanism?",o:["S_N1","S_N2","E1","Free radical"],a:1,e:"Both species are in the rate-determining transition state: bimolecular, S_N2."},
+ {q:"(S)-2-Bromobutane + OH⁻ under S_N2 conditions gives:",o:["(S)-2-butanol","(R)-2-butanol","racemic 2-butanol","1-butanol"],a:1,e:"Backside attack inverts the configuration."},
+ {q:"Which reacts fastest by S_N1?",o:["CH₃Br","CH₃CH₂Br","(CH₃)₂CHBr","(CH₃)₃CBr"],a:3,e:"S_N1 depends on carbocation stability: 3° » 2° > 1° > CH₃."},
+ {q:"Which reacts fastest by S_N2?",o:["CH₃Br","CH₃CH₂Br","(CH₃)₂CHBr","(CH₃)₃CBr"],a:0,e:"S_N2 depends on steric hindrance: CH₃ > 1° > 2° > 3°."},
+ {q:"In a PROTIC solvent, the best nucleophile among the halides is:",o:["F⁻","Cl⁻","Br⁻","I⁻"],a:3,e:"I⁻ is large, polarizable and least solvated. In aprotic solvents the order reverses."},
+ {q:"CH₃I + NaN₃ runs about 100,000× faster in which solvent?",o:["Methanol","Water","DMF","Ethanol"],a:2,e:"Polar aprotic solvents solvate the Na⁺ but leave N₃⁻ unsolvated and free to react."},
+ {q:"Why does S_N1 give racemization?",o:["The nucleophile attacks twice","The carbocation is planar and can be attacked from either face","The leaving group returns","The solvent inverts the product"],a:1,e:"L has already left. The flat sp² cation can be attacked from front or back, with slightly more inversion."},
+ {q:"Best way to make ethyl isopropyl ether by Williamson synthesis:",o:["Sodium ethoxide + isopropyl chloride","Sodium isopropoxide + ethyl chloride","Ethanol + isopropanol, no catalyst","Isopropyl chloride + ethyl chloride"],a:1,e:"Keep the halide primary for S_N2. A 2° halide with a strong alkoxide base gives mostly E2."},
+ {q:"Which is the best leaving group?",o:["F⁻","Cl⁻","OH⁻","Tosylate (TsO⁻)"],a:3,e:"Relative rates: TsO⁻ 6 > I⁻ 3 > Br⁻ 1 > Cl⁻ 0.02 > F⁻ 0.0001. OH⁻ is poor unless protonated."},
+ {q:"Methanolysis of 3,3-dimethyl-2-bromobutane gives mostly the rearranged ether because:",o:["a 1,2-methyl shift turns the 2° cation into a 3° cation","S_N2 inverts the molecule","methanol is a strong base","Br⁻ migrates"],a:0,e:"Carbocations rearrange when a 1,2-shift (H, alkyl or aryl) gives a more stable cation."}
+],
+elim:[
+ {q:"2-Bromo-2-methylbutane + t-BuOK gives mainly:",o:["2-methyl-2-butene (Zaitsev)","2-methyl-1-butene (Hofmann)","an ether","2-methyl-2-butanol"],a:1,e:"A bulky base removes the most accessible β-H, giving the less substituted alkene."},
+ {q:"E2 kinetics are:",o:["first order in substrate only","second order: rate = k[substrate][base]","zero order","dependent only on the base"],a:1,e:"E2 is a single, bimolecular step involving both the substrate and the base."},
+ {q:"Which change favors ELIMINATION over substitution?",o:["Lower temperature","More polar solvent","Stronger, bulkier base","Better nucleophile that is a weak base (e.g. RS⁻)"],a:2,e:"Elimination is favored by high T, a strong (and bulky) base, less polar solvent, crowded substrate, and an EWG on the β-C."},
+ {q:"2-Bromobutane + KOEt in ethanol. Major alkene?",o:["1-Butene","2-Butene","Cyclobutane","Isobutylene"],a:1,e:"Saytzeff rule: a neutral substrate gives mainly the more substituted alkene."},
+ {q:"A quaternary ammonium salt undergoes elimination. The major alkene is:",o:["the most substituted","the least substituted (Hofmann)","always a cis alkene","no alkene forms"],a:1,e:"Charged substrates follow the Hofmann rule and give the less substituted alkene."},
+ {q:"For E2 in a cyclohexane ring, the H and the leaving group must be:",o:["both equatorial","one axial, one equatorial","both axial (trans-diaxial)","cis to each other"],a:2,e:"Anti-periplanar geometry in a chair is only possible when both are axial."},
+ {q:"2-Bromopropane + NaOEt gives 79% propene. Why does elimination win?",o:["Ethoxide is a strong base","Ethoxide is a weak nucleophile","Propene is an ether","The substrate is 1°"],a:0,e:"The negative charge on O makes ethoxide a strong base. In plain ethanol (weak base) substitution wins, 97%."},
+ {q:"Which pathway can give rearranged alkenes?",o:["E2","E1","S_N2","Neither"],a:1,e:"E1 passes through a carbocation, which can undergo 1,2-shifts."}
+],
+other:[
+ {q:"Why won't an alcohol react with NaBr alone?",o:["Br⁻ is a weak nucleophile","OH⁻ is a strong base and a very poor leaving group","Alcohols are too acidic","The reaction is too fast"],a:1,e:"The –OH has to be protonated (or otherwise converted) so it leaves as H₂O or another weak base."},
+ {q:"Which alcohol turns the Lucas reagent cloudy almost immediately?",o:["1-butanol","2-butanol","2-methyl-2-propanol","methanol"],a:2,e:"The Lucas test runs by S_N1, so the 3° alcohol (stable 3° cation) reacts fastest."},
+ {q:"(R)-2-Butanol + PBr₃ gives:",o:["(R)-2-bromobutane","(S)-2-bromobutane","racemic 2-bromobutane","2-butene"],a:1,e:"PBr₃ works by S_N2, so the stereocenter is inverted."},
+ {q:"2-Methyl-2-butanol + conc. H₂SO₄, heat. Major product?",o:["2-methyl-1-butene","2-methyl-2-butene","3-methyl-1-butene","2-methyl-2-butyl hydrogen sulfate"],a:1,e:"E1 dehydration gives the more substituted (Zaitsev) alkene."},
+ {q:"CH₃–O–CH₂CH₂CH₃ + one equivalent of HI gives:",o:["CH₃OH + CH₃CH₂CH₂I","CH₃I + CH₃CH₂CH₂OH","two alcohols","no reaction"],a:1,e:"After protonation, I⁻ attacks the less hindered methyl carbon by S_N2."},
+ {q:"tert-Butyl methyl ether + HI gives:",o:["CH₃I + (CH₃)₃COH","(CH₃)₃CI + CH₃OH","isobutylene only","no reaction"],a:1,e:"The tertiary side leaves as a 3° cation (S_N1), which picks up I⁻."},
+ {q:"sec-Butyltrimethylammonium hydroxide, heated, gives mainly:",o:["2-butene","1-butene","butanol","butane"],a:1,e:"Charged leaving group: Hofmann rule, least substituted alkene."},
+ {q:"Propylene oxide + NaOCH₃: the methoxide attacks:",o:["the more substituted carbon","the less substituted carbon","the oxygen","both carbons equally"],a:1,e:"With a strong nucleophile, epoxide opening is S_N2, so the less hindered carbon is attacked."},
+ {q:"Ethanol + conc. H₂SO₄ at about 140 °C mainly gives:",o:["ethylene","diethyl ether","acetic acid","ethyl hydrogen sulfate only"],a:1,e:"At the lower temperature substitution wins (ether); around 180 °C elimination gives ethylene."}
+],
+an:[
+ {q:"A ketone protected as an acetal will survive which reagent?",o:["H₃O⁺","CH₃MgBr","aqueous HCl","dilute H₂SO₄"],a:1,e:"Acetals are stable to bases, Grignards and hydrides, and are removed by aqueous acid."},
+ {q:"Why do aldehydes and ketones undergo addition rather than substitution?",o:["The carbonyl C is negative","H⁻ and R⁻ are very poor leaving groups","They have no π bond","They are too unreactive"],a:1,e:"There is nothing that can leave, so the tetrahedral adduct is the product."},
+ {q:"Rank toward nucleophilic addition (most → least):",o:["acetone > acetaldehyde > formaldehyde","formaldehyde > acetaldehyde > acetone","acetaldehyde > acetone > formaldehyde","all equal"],a:1,e:"Alkyl groups donate electrons (+I) and add bulk, so aldehydes beat ketones and HCHO is the most reactive."},
+ {q:"Benzaldehyde (no α-H) heated with 50% KOH undergoes:",o:["aldol condensation","Cannizzaro reaction","haloform reaction","Strecker synthesis"],a:1,e:"No α-H means no enolate. It disproportionates to benzoate and benzyl alcohol."},
+ {q:"Which compound gives a positive iodoform test?",o:["3-Pentanone","2-Butanone","Benzaldehyde","Methanol"],a:1,e:"Methyl ketones (CH₃CO–R) give yellow CHI₃. 3-Pentanone has no CH₃–C=O."},
+ {q:"A ketone + 2,4-DNPH forms:",o:["an oxime","a yellow-orange 2,4-dinitrophenylhydrazone precipitate","a semicarbazone","an acetal"],a:1,e:"C=O + H₂N–Z → C=N–Z + H₂O. With 2,4-DNPH the product is a colored solid used for identification."},
+ {q:"Aldehyde + 2 ROH + acid catalyst gives:",o:["hemiacetal","acetal","cyanohydrin","aldol"],a:1,e:"The first ROH gives the hemiacetal. Acid lets –OH leave as water, and the second ROH gives the acetal."},
+ {q:"Acetone + CH₃MgBr, then H₃O⁺, gives:",o:["2-Propanol","2-Methyl-2-propanol (tert-butyl alcohol)","2-Butanone","Ethanol"],a:1,e:"The Grignard adds CH₃⁻ to the ketone C. A ketone gives a 3° alcohol."},
+ {q:"An α,β-unsaturated ketone + CN⁻ mainly gives:",o:["direct (1,2) addition","conjugate (1,4) addition","no reaction","substitution of O"],a:1,e:"Weakly basic nucleophiles (CN⁻, amines, RSH, X⁻) add conjugate. Strong bases (RLi, RMgX, LiAlH₄) add directly."},
+ {q:"Strecker synthesis from acetaldehyde gives which amino acid?",o:["Glycine","Alanine","Valine","Serine"],a:1,e:"CH₃CHO + NH₃ + HCN → aminonitrile → hydrolysis → CH₃CH(NH₂)COOH, alanine."}
+],
+snac:[
+ {q:"Methyl benzoate + DIBAH at −78 °C, then water, gives:",o:["benzyl alcohol","benzaldehyde","benzoic acid","toluene"],a:1,e:"DIBAH at low temperature stops at the aldehyde; LiAlH₄ would go on to the alcohol."},
+ {q:"An acid chloride + (CH₃)₂CuLi gives:",o:["a 3° alcohol","a methyl ketone","an ester","an aldehyde"],a:1,e:"Gilman reagents add once and stop at the ketone; a Grignard would add twice."},
+ {q:"Most reactive toward nucleophilic acyl substitution:",o:["Amide","Ester","Acid chloride","Carboxylic acid"],a:2,e:"Cl⁻ is the best leaving group in the family."},
+ {q:"Correct order of leaving-group ability:",o:["NH₂⁻ > OH⁻ > RO⁻ > RCOO⁻ > Cl⁻","Cl⁻ > RCOO⁻ > RO⁻ > OH⁻ > NH₂⁻","RO⁻ > Cl⁻ > NH₂⁻ > OH⁻","OH⁻ > Cl⁻ > RCOO⁻"],a:1,e:"Weaker bases leave more easily, which is why amides are least reactive."},
+ {q:"Saponification of methyl propanoate with NaOH gives:",o:["propanoic acid + methanol","sodium propanoate + methanol","propanal + methanol","methyl propanoate (no reaction)"],a:1,e:"Base hydrolysis gives the carboxylate salt, which cannot react back, so the reaction goes to completion."},
+ {q:"CH₃COOH + SOCl₂ gives:",o:["CH₃COCl + SO₂ + HCl","CH₃CHO","(CH₃CO)₂O","CH₃COOCH₃"],a:0,e:"Thionyl chloride converts a carboxylic acid into the more reactive acid chloride."},
+ {q:"Which ester substituent makes the acyl carbon MOST reactive?",o:["–NH₂","–Cl","–CN","–CH₃"],a:2,e:"The strongly electron-withdrawing cyano group makes the acyl carbon most electrophilic."},
+ {q:"Hydrolysis of a nitrile (R–C≡N) with acid and water gives:",o:["an amine","a carboxylic acid","an aldehyde","an alcohol"],a:1,e:"R–C≡N → amide → R–COOH."},
+ {q:"Which reaction of a base Y: has the FASTEST initial rate?",o:["Y: + H–Z (proton transfer)","Y: + C=O (addition)","Y: + C–L (substitution)","They are equal"],a:0,e:"Proton transfer is fastest; addition to C=O is medium; substitution at sp³ C is slowest."}
+],
+snar:[
+ {q:"m-Bromonitrobenzene + NaOH at 70 °C gives:",o:["m-nitrophenol","p-nitrophenol","no reaction","benzyne products only"],a:2,e:"The nitro group must be ortho or para to the leaving group to stabilize the Meisenheimer complex."},
+ {q:"Which experiment supports a benzyne intermediate?",o:["Trapping with furan in a Diels–Alder reaction","A color change","Rate independent of base","Formation of a silver mirror"],a:0,e:"Furan captures benzyne as a cycloadduct; the 50:50 split of a ¹⁴C label also supports it."},
+ {q:"Why doesn't chlorobenzene undergo S_N2 with NaOH?",o:["Cl⁻ is a poor leaving group","The ring blocks backside attack","Phenyl cation is too stable","NaOH is too weak a base"],a:1,e:"Backside attack would have to come from inside the ring. Also, the C–Cl bond has partial double-bond character."},
+ {q:"Which aryl chloride reacts fastest with aqueous base?",o:["Chlorobenzene","m-Nitrochlorobenzene","p-Nitrochlorobenzene","2,4,6-Trinitrochlorobenzene"],a:3,e:"More electron-withdrawing groups ortho/para to Cl means a more stabilized Meisenheimer complex. Trinitro reacts at 35 °C."},
+ {q:"The Meisenheimer complex is:",o:["a resonance-stabilized carbanion","a carbocation","a benzyne","a free radical"],a:0,e:"The nucleophile adds to the ring and the negative charge is delocalized, best onto o/p nitro groups."},
+ {q:"Bromobenzene + KNH₂ in liquid NH₃ gives aniline by:",o:["addition–elimination","elimination–addition via benzyne","S_N1 via phenyl cation","radical substitution"],a:1,e:"An unactivated aryl halide with a very strong base: HBr is eliminated to give benzyne, then NH₂⁻/NH₃ adds."},
+ {q:"Benzenediazonium chloride + CuCN gives:",o:["Benzonitrile","Phenol","Aniline","Chlorobenzene"],a:0,e:"Sandmeyer reaction: CuCl → ArCl, CuBr → ArBr, CuCN → ArCN."},
+ {q:"Why must the partner ring in azo coupling carry –OH or –NR₂?",o:["Diazonium ion is a weak electrophile","Diazonium ion is a strong nucleophile","To prevent explosion","To form benzyne"],a:0,e:"ArN₂⁺ is only weakly electrophilic, so it attacks only strongly activated rings."},
+ {q:"How many products form from m-bromoethylbenzene + NaNH₂/NH₃?",o:["1","2","3","4"],a:2,e:"Two different benzynes can form, giving o-, m- and p-ethylaniline."}
+],
+redox:[
+ {q:"1-Propanol + PCC in CH₂Cl₂ gives:",o:["propanoic acid","propanal","propene","no reaction"],a:1,e:"PCC stops at the aldehyde; chromic acid would continue to the acid."},
+ {q:"Cold, dilute KMnO₄ adds the two OH groups:",o:["anti","syn","randomly","only to aldehydes"],a:1,e:"Both oxygens are delivered from the permanganate on the same face (syn dihydroxylation)."},
+ {q:"Positive Baeyer's test (cold dilute KMnO₄):",o:["silver mirror","purple color fades and brown MnO₂ forms","brick-red precipitate","orange turns green"],a:1,e:"KMnO₄ oxidizes the C=C to a diol and is reduced to brown MnO₂."},
+ {q:"Benzaldehyde gives:",o:["positive Tollens', positive Benedict's","positive Tollens', negative Benedict's","negative Tollens', positive Benedict's","negative for both"],a:1,e:"Tollens' detects all aldehydes. Benedict's/Fehling's detect only aliphatic aldehydes."},
+ {q:"2-Butyne + H₂ with Lindlar's catalyst gives:",o:["trans-2-butene","cis-2-butene","butane","1-butene"],a:1,e:"Lindlar gives syn addition and stops at the cis alkene. Na or Li in liquid NH₃ gives the trans alkene."},
+ {q:"Which reagent reduces an ester to an alcohol?",o:["NaBH₄","H₂, Pt","LiAlH₄","Zn(Hg), HCl"],a:2,e:"Acid derivatives are reduced only by the strong hydride donor LiAlH₄."},
+ {q:"Rosenmund reduction converts:",o:["ketone → alcohol","acid chloride → aldehyde","nitro → amine","alkyne → alkene"],a:1,e:"H₂ over a deactivated Pd catalyst stops at the aldehyde stage."},
+ {q:"Clemmensen and Wolff–Kishner reductions both convert:",o:["C=O → CH₂","C=O → CH–OH","C=C → CH–CH","NO₂ → NH₂"],a:0,e:"Clemmensen uses Zn(Hg)/HCl (acid); Wolff–Kishner uses H₂NNH₂/OH⁻ (base)."},
+ {q:"Ozonolysis (O₃; Zn/H₂O) of 2-methyl-2-butene gives:",o:["2 CH₃CHO","acetone + acetaldehyde","acetone + formaldehyde","butanone + formaldehyde"],a:1,e:"(CH₃)₂C=CHCH₃ splits at the C=C: (CH₃)₂C=O and O=CHCH₃."},
+ {q:"Which alcohol is NEGATIVE to the chromic acid test?",o:["1-Propanol","2-Propanol","2-Methyl-2-propanol","Ethanol"],a:2,e:"3° alcohols have no H on the carbinol carbon, so they are not oxidized."}
+]
+};
+
+/* ---------- storage helpers ---------- */
+function load(k){try{return JSON.parse(localStorage.getItem(k));}catch(e){return null;}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+var best=load("ch4n-best")||{};
+
+function fmtCode(s){return s.replace(/_([A-Z])/g,"<sub>$1</sub>");}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+function subs(s){return esc(s).replace(/S_N2|S_N1|S_N/g,function(m){return "S<sub>N</sub>"+m.slice(3);});}
+
+function renderScores(){
+  document.querySelectorAll("[data-s]").forEach(function(el){
+    var b=best[el.getAttribute("data-s")];
+    el.textContent=b?b.s+"/"+b.n:"";
+  });
+  var hc=document.getElementById("home-cards");
+  hc.innerHTML=TOPICS.map(function(t){
+    var b=best[t.id];
+    return '<a class="tcard" href="#'+t.id+'"><div class="row"><span class="code">'+fmtCode(t.code)+'</span><span class="score'+(b?' done':'')+'">'+(b?'best '+b.s+'/'+b.n:QUIZ[t.id].length+' questions')+'</span></div><h3>'+t.name+'</h3><p>'+subs(t.desc)+'</p></a>';
+  }).join("");
+}
+
+/* ---------- videos ---------- */
+var watched=load("ch4n-watched")||{};
+function vlink(v,short){
+  if(!v.id)return '<span class="vpill off">'+(short?'▶ class drive':'Lec6_FRS.mp4')+'</span>';
+  var pm=/Part (\w+)/.exec(v.t);return '<a class="vpill" href="https://youtu.be/'+v.id+'" target="_blank" rel="noopener">▶ '+(short?(pm?'Part '+pm[1]:'Watch'):esc(v.t))+'</a>';
+}
+function renderVideos(){
+  var lessonName={};TOPICS.forEach(function(t){lessonName[t.id]=t.name;});
+  document.getElementById("vlist").innerHTML=VIDEOS.map(function(v){
+    return '<tr'+(watched[v.k]?' class="done"':'')+'><td><input type="checkbox" id="w-'+v.k+'" data-w="'+v.k+'"'+(watched[v.k]?' checked':'')+' aria-label="Watched '+esc(v.t)+'"></td><td class="num">'+v.w+'</td><td>'+(v.id?'<a href="https://youtu.be/'+v.id+'" target="_blank" rel="noopener">'+esc(v.t)+'</a>':esc(v.t))+'</td><td><a href="#'+v.v+'">'+esc(lessonName[v.v])+'</a></td></tr>';
+  }).join("");
+  document.querySelectorAll("[data-vid]").forEach(function(el){
+    var v=VIDEOS.filter(function(x){return x.k===el.getAttribute("data-vid");})[0];
+    if(v)el.innerHTML=vlink(v,true);
+  });
+}
+document.getElementById("vlist").addEventListener("change",function(ev){
+  var k=ev.target.getAttribute("data-w");if(!k)return;
+  if(ev.target.checked)watched[k]=1;else delete watched[k];
+  save("ch4n-watched",watched);ev.target.closest("tr").classList.toggle("done",ev.target.checked);
+});
+renderVideos();
+
+/* ---------- quizzes ---------- */
+function Quiz(el,id){
+  var qs=QUIZ[id],i=0,answers=[];
+  function draw(){
+    if(i>=qs.length){return finish();}
+    var q=qs[i],ans=answers[i];
+    var h='<div class="qhead"><h3>Quiz · '+TOPICS.filter(function(t){return t.id===id;})[0].name+'</h3><span class="progress">Question '+(i+1)+' of '+qs.length+'</span></div>';
+    h+='<div class="bar"><i style="width:'+(i/qs.length*100)+'%"></i></div>';
+    h+='<div class="prompt">'+subs(q.q)+'</div><div class="opts">';
+    q.o.forEach(function(o,k){
+      var cls="opt";
+      if(ans!==undefined){ if(k===q.a)cls+=" right"; else if(k===ans)cls+=" wrong"; }
+      h+='<button type="button" class="'+cls+'" data-k="'+k+'"'+(ans!==undefined?' disabled':'')+'><span class="l">'+"ABCDE"[k]+'</span><span>'+subs(o)+'</span></button>';
+    });
+    h+='</div>';
+    if(ans!==undefined){
+      h+='<div class="feedback">'+(ans===q.a?'<b class="ok">Correct.</b> ':'<b class="no">Not quite.</b> The answer is '+"ABCDE"[q.a]+'. ')+subs(q.e)+'</div>';
+    }
+    h+='<div class="qnav"><button type="button" class="btn ghost" data-act="prev"'+(i===0?' disabled':'')+'>Back</button><button type="button" class="btn" data-act="next"'+(ans===undefined?' disabled':'')+'>'+(i===qs.length-1?'See score':'Next')+'</button></div>';
+    el.innerHTML=h;
+  }
+  function finish(){
+    var s=0;qs.forEach(function(q,k){if(answers[k]===q.a)s++;});
+    if(!best[id]||s>best[id].s){best[id]={s:s,n:qs.length};save("ch4n-best",best);renderScores();}
+    var msg=s===qs.length?"Perfect. You have this topic down.":(s/qs.length>=0.7?"Good. Review the ones you missed below.":"Reread the lesson above, then try again.");
+    var h='<div class="qhead"><h3>Quiz complete</h3><span class="progress">best '+best[id].s+'/'+best[id].n+'</span></div>';
+    h+='<div class="bar"><i style="width:100%"></i></div><div class="result">'+s+' / '+qs.length+'</div><p style="margin:0">'+msg+'</p><div class="review">';
+    qs.forEach(function(q,k){ if(answers[k]!==q.a) h+='<div><b>Q'+(k+1)+'.</b> '+subs(q.q)+' <br><b style="color:var(--good)">Answer:</b> '+subs(q.o[q.a])+'</div>'; });
+    h+='</div><div class="qnav"><button type="button" class="btn" data-act="retry">Retake quiz</button></div>';
+    el.innerHTML=h;
+  }
+  el.addEventListener("click",function(ev){
+    var b=ev.target.closest("button");if(!b||b.disabled)return;
+    if(b.hasAttribute("data-k")){answers[i]=+b.getAttribute("data-k");draw();return;}
+    var a=b.getAttribute("data-act");
+    if(a==="next"){i++;draw();} else if(a==="prev"){i--;draw();} else if(a==="retry"){i=0;answers=[];draw();}
+  });
+  draw();
+}
+document.querySelectorAll(".quiz").forEach(function(el){Quiz(el,el.getAttribute("data-quiz"));});
+
+/* ---------- routing ---------- */
+var VIEWS=["home","start","sn","elim","other","an","snac","snar","redox","predict"];
+function route(){
+  var h=(location.hash||"").replace("#","");
+  if(VIEWS.indexOf(h)<0)h="home";
+  VIEWS.forEach(function(v){document.getElementById("v-"+v).hidden=(v!==h);});
+  document.querySelectorAll("nav.rail a").forEach(function(a){
+    if(a.getAttribute("data-v")===h){a.setAttribute("aria-current","page");try{a.scrollIntoView({block:"nearest",inline:"nearest"});}catch(e){}}
+    else a.removeAttribute("aria-current");
+  });
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- predictor ---------- */
+var SUBN={me:"methyl",p1:"primary",ab:"1° allylic/benzylic",p2:"secondary",p3:"tertiary"};
+function predict(sub,rg,heat){
+  var r={main:"",minor:"",why:"",draw:""};
+  var DRAW={SN2:"Nu replaces the leaving group with inversion.",SN1:"Nu goes on the carbocation carbon (check for rearrangement); racemic.",E2:"Zaitsev alkene unless the base is bulky; trans favored; H and L anti-periplanar.",E1:"Zaitsev alkene after any rearrangement; trans favored."};
+  if(sub==="me"){
+    if(rg==="base"){r.main="No reaction";r.why="A methyl substrate has no β-H, so it can't eliminate, and this reagent isn't a nucleophile.";}
+    else if(rg==="weak"){r.main="Very slow S_N2";r.why="Methyl can't form a cation (no S_N1), and water or alcohol is too weak a nucleophile for a useful S_N2.";r.draw=DRAW.SN2;}
+    else{r.main="S_N2";r.why="Methyl is the least hindered substrate and has no β-H, so elimination is impossible."+(rg==="bulky"?" A bulky alkoxide still works here, just slowly.":"");r.draw=DRAW.SN2;}
+  } else if(sub==="p1"){
+    if(rg==="nuc"){r.main="S_N2";r.why="Primary substrate, good nucleophile, weak base: backside attack is easy.";r.draw=DRAW.SN2;}
+    else if(rg==="base"){r.main="E2";r.why="The reagent can only act as a base.";r.draw=DRAW.E2;}
+    else if(rg==="both"){r.main="S_N2";r.minor="E2";r.why="Primary carbons are open to backside attack, so substitution beats elimination.";r.draw=DRAW.SN2;}
+    else if(rg==="bulky"){r.main="E2";r.minor="S_N2";r.why="t-BuO⁻ is too bulky to reach the carbon, so it pulls off a β-H instead. This is the exception for primary substrates.";r.draw=DRAW.E2;}
+    else{r.main="Too slow to be practical";r.why="A 1° cation is too unstable for S_N1, and water or alcohol is too weak for S_N2.";}
+  } else if(sub==="ab"){
+    if(rg==="nuc"||rg==="both"){r.main="S_N2";r.minor=rg==="both"?"E2":"";r.why="Allylic and benzylic halides are very reactive toward S_N2 (the π system helps the transition state).";r.draw=DRAW.SN2;}
+    else if(rg==="base"||rg==="bulky"){r.main="E2";r.why="Strong, non-nucleophilic or bulky base removes a β-H.";r.draw=DRAW.E2;}
+    else{r.main="S_N1";r.minor="E1";r.why="Even though it's primary, the allylic or benzylic cation is resonance-stabilized, so ionization works.";r.draw=DRAW.SN1+" Watch for the allylic shift: Nu can bond at either end of an allylic cation.";}
+  } else if(sub==="p2"){
+    if(rg==="nuc"){r.main="S_N2";r.minor="S_N1";r.why="Secondary with a good nucleophile that's a weak base: S_N2 is usually favored, especially in a polar aprotic solvent.";r.draw=DRAW.SN2;}
+    else if(rg==="base"){r.main="E2";r.why="The reagent can only act as a base.";r.draw=DRAW.E2;}
+    else if(rg==="both"){r.main="E2";r.minor="S_N2";r.why="Secondary carbons are crowded enough that the strong base removes a β-H faster than it attacks carbon.";r.draw=DRAW.E2;}
+    else if(rg==="bulky"){r.main="E2";r.why="Bulky base: elimination, and it favors the less substituted (Hofmann) alkene.";r.draw="Hofmann (less substituted) alkene favored; H and L anti-periplanar.";}
+    else{r.main="S_N1 + E1 mixture";r.minor="slow S_N2, E2";r.why="Klein calls this 'not practical': a 2° cation forms slowly and you get a messy mixture, often with rearrangement."+(heat?" Heat shifts the mixture toward E1.":"");r.draw=DRAW.SN1;}
+  } else {
+    if(rg==="nuc"){r.main="S_N1";r.why="Tertiary carbons can't do S_N2. A nucleophile that's a weak base waits for the 3° cation to form.";r.draw=DRAW.SN1;}
+    else if(rg==="base"||rg==="both"){r.main="E2";r.why="A strong base on a tertiary substrate gives only elimination; S_N2 is blocked by the three alkyl groups.";r.draw=DRAW.E2;}
+    else if(rg==="bulky"){r.main="E2";r.why="Bulky base on a tertiary substrate: elimination, favoring the less substituted (Hofmann) alkene.";r.draw="Hofmann (less substituted) alkene favored.";}
+    else{ if(heat){r.main="E1";r.minor="S_N1";r.why="3° cation forms easily. Heat speeds up E1 more than S_N1, so elimination can take over.";r.draw=DRAW.E1;}
+          else{r.main="S_N1";r.minor="E1";r.why="3° cation forms easily; the weak nucleophile (often the solvent) adds to it. This is solvolysis.";r.draw=DRAW.SN1;} }
+  }
+  if(heat && /S_N2/.test(r.main) && (sub==="p1"||sub==="p2") && rg==="both"){r.why+=" Heating increases the share of E2.";}
+  return r;
+}
+function sn(t){return t.replace(/S_N(\d?)/g,"S<sub>N</sub>$1");}
+function drawPredict(){
+  var s=document.getElementById("pr-sub").value,g=document.getElementById("pr-reag").value,h=document.getElementById("pr-heat").value==="1";
+  var r=predict(s,g,h);
+  document.getElementById("pr-out").innerHTML='<div class="result">'+sn(r.main)+(r.minor?' <span style="font-size:15px;color:var(--muted)">(minor: '+sn(r.minor)+')</span>':'')+'</div><p style="margin:6px 0 0">'+sn(r.why)+'</p>'+(r.draw?'<p style="margin:6px 0 0"><b>Draw it:</b> '+r.draw+'</p>':'');
+}
+["pr-sub","pr-reag","pr-heat"].forEach(function(id){document.getElementById(id).addEventListener("change",drawPredict);});
+drawPredict();
+
+var PX=[
+ ["1-Bromobutane + NaCN in DMSO","SN2","Primary substrate and a nucleophile that's a weak base: S_N2. DMSO (polar aprotic) speeds it up."],
+ ["2-Bromobutane + NaOEt in ethanol","E2","Secondary + strong base/strong nucleophile: E2 major (mostly trans-2-butene), S_N2 minor."],
+ ["tert-Butyl bromide + water, room temperature","SN1","Tertiary + weak nucleophile: the 3° cation forms and water adds (solvolysis), with a little E1."],
+ ["tert-Butyl chloride + NaOH, heat","E2","Tertiary + strong base: E2 only. S_N2 is impossible at a 3° carbon."],
+ ["1-Bromopropane + t-BuOK","E2","The bulky base can't reach carbon, so even a primary substrate eliminates."],
+ ["Bromomethane + NaOH","SN2","Methyl has no β-H, so elimination is impossible."],
+ ["(S)-2-Iodobutane + NaSH in acetone","SN2","Secondary + nucleophile only, polar aprotic solvent: S_N2 with inversion, giving (R)-2-butanethiol."],
+ ["2-Bromo-2-methylbutane in ethanol, heated","E1","Tertiary + weak base with heat: E1 takes a large share (Zaitsev alkene, 2-methyl-2-butene), alongside S_N1."],
+ ["Benzyl chloride + water","SN1","The benzylic cation is resonance-stabilized, so even this primary halide ionizes."],
+ ["2-Bromopropane + DBU","E2","DBU is a base only, so elimination: propene."],
+ ["Bromocyclohexane + NaOCH₃","E2","Secondary + strong base: cyclohexene by E2 is the major product."],
+ ["1-Chlorobutane + NaN₃ in DMF","SN2","Primary + good nucleophile in a polar aprotic solvent: textbook S_N2."],
+ ["2-Methyl-2-butanol + conc. H₂SO₄, heat","E1","Tertiary alcohol dehydration: protonate, lose water, 3° cation, lose β-H (Zaitsev)."],
+ ["1-Butanol + HBr","SN2","Primary alcohol: –OH is protonated, then Br⁻ attacks from the back. A 1° cation never forms."],
+ ["2-Methyl-2-propanol + conc. HCl","SN1","Tertiary alcohol: protonate, lose water, 3° cation, Cl⁻ adds."]
+];
+var pxi=-1,pxRight=0,pxDone=0,pxOrder=[];
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function pxNext(){
+  if(!pxOrder.length)pxOrder=shuffle(PX.map(function(_,k){return k;}));
+  pxi=pxOrder.pop();var it=PX[pxi];
+  document.getElementById("px-q").textContent=it[0]+": which mechanism gives the major product?";
+  document.getElementById("px-opts").innerHTML=["SN1","SN2","E1","E2"].map(function(m,k){return '<button type="button" class="opt" data-m="'+m+'"><span class="l">'+"ABCD"[k]+'</span><span>'+sn(m.replace("SN","S_N"))+'</span></button>';}).join("");
+  document.getElementById("px-fb").hidden=true;
+}
+document.getElementById("px-opts").addEventListener("click",function(ev){
+  var b=ev.target.closest("button");if(!b||b.disabled)return;var it=PX[pxi],m=b.getAttribute("data-m"),ok=m===it[1];
+  document.querySelectorAll("#px-opts .opt").forEach(function(o){o.disabled=true;var mm=o.getAttribute("data-m");if(mm===it[1])o.classList.add("right");else if(mm===m)o.classList.add("wrong");});
+  pxDone++;if(ok)pxRight++;
+  var fb=document.getElementById("px-fb");fb.hidden=false;fb.innerHTML=(ok?'<b class="ok">Correct.</b> ':'<b class="no">Not quite.</b> It\'s '+sn(it[1].replace("SN","S_N"))+'. ')+sn(it[2]);
+  document.getElementById("px-score").textContent=pxRight+" / "+pxDone+" correct this session";
+});
+document.getElementById("px-next").addEventListener("click",pxNext);
+pxNext();
+
+renderScores();route();
+})();
+</script>
+
+</body>
+</html>
