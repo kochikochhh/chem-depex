@@ -1,1 +1,1 @@
-# chem-depex
+# walang magpapakalat
